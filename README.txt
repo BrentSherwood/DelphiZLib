@@ -1,12 +1,23 @@
--- notes ---------------------------------------------------------------------
+﻿-- notes ---------------------------------------------------------------------
 
-  the zlibex.pas unit included in this archive will work with delphi 5, 6,
-  and 7 and it should work with delphi 8, 2005, and 2006.  if you previously
-  downloaded my delphi 5 unit, you will notice that the unit has been
-  renamed. this was done because borland included a zlib.dcu file with
-  delphi 6 and up; and i felt it was more correct to rename my unit and have
-  developers update their code than to make developers worry about the
-  possible file contention.
+  the units included in this archive should work with delphi 5 through delphi
+  2009.
+
+  2009.04.14  the introduction of delphi 2009 and the native unicode support
+              has forced an internal design change with the string routines
+              found in the units.  to accommodate everyone, the current string
+              routines have been changed to be 100% backward compatible, i.e.
+              String was changed to AnsiString.  to allow for forward and
+              backward compatibility, each string function now has two
+              comparable string procedures -- one for AnsiString and one for
+              UnicodeString/WideString.
+
+  2001.10.26  if you previously downloaded my delphi 5 library, you will
+              notice that the unit has been renamed.  this was done because
+              borland began including a zlib.dcu file with delphi 6 and it was
+              more correct for me to rename my unit and have developers update
+              their code than to make developers deal with the file
+              contention.
 
   please contact me if you find any errors, make any changes, add new
   functionality, or have any general suggestions so that i may incorporate
@@ -37,12 +48,54 @@
 
 -- history -------------------------------------------------------------------
 
+  2009.04.14  zlibex.pas
+                added overloaded string routines for AnsiString and
+                  UnicodeString
+
+              zlibexgz.pas
+                added overloaded string routines for AnsiString and
+                  UnicodeString
+                removed deprecated Z*G routines
+
+  2009.04.11  zlibex.inc
+                updated to use CONDITIONALEXPRESSIONS and CompilerVersion
+
+  2009.01.28  zlibex.pas
+                updated for delphi 2009 String (UnicodeString)
+
+              zlibexgz.pas
+                updated for delphi 2009 String (UnicodeString)
+
+              zlibex.inc
+                updated for delphi 2009
+
+  2008.05.15  zlibex.pas
+                added TStreamPos type Stream.Position variants
+                added TCustomZStream.Stream* methods
+
+              zlibexgz.pas
+                added TGZCompressionStream and TGZDecompressionStream
+
+  2007.11.06  zlibexgz.pas
+                changed TGZTrailer.Crc from Cardinal to Longint
+
+  2007.10.01  zlibexgz.pas
+                added GZDecompressStreamSize
+                fixed GZDecompressStream position handling
+
+              zlibex.inc
+                updated for delphi 2007
+
+  2007.08.17  zlibex.pas
+                modified TZCompressionStream.Write to use Write instead of
+                  WriteBuffer
+
   2007.07.18  zlibexgz.pas
                 fixed GZCompressStr filename and comment processing
 
   2007.03.18  zlibexgz.pas
                 modified naming convention for gzip routines GZ*
-                deprecated previous gzip routines *G
+                deprecated previous gzip routines Z*G
 
   2007.03.15  zlibex.pas
                 moved gzip routines to separate unit - zlibexgz.pas
@@ -138,20 +191,20 @@
   burak kalayci - thanks for emailing to inform me about the zlib 1.1.4
     update; and again for emailing about 1.2.1.
 
-  vicente s�nchez-alarcos - thanks for emailing to inform me about the zlib
+  vicente sánchez-alarcos - thanks for emailing to inform me about the zlib
     1.2.2 update.
 
   luigi sandon - thanks for pointing out the missing loop condition
     (Z_STREAM_END) in ZInternalCompressStream and ZInternalDecompressStream.
 
-  ferry van genderen - thanks for assiting me fine tune and beta test the
+  ferry van genderen - thanks for assisting me fine tune and beta test the
     ZInternalCompressStream and ZInternalDecompressStream routines.
 
   mathijs van veluw - thanks for emailing to inform me about the zlib 1.2.3
     update.
 
   j. rathlev - thanks for pointing out the FStreamPos and TStream.Position
-    type inconsitency.
+    type inconsistency.
 
   ralf wenske - thanks for prototyping and assisting with ZCompressStrG and
     ZCompressStreamG.
@@ -166,14 +219,25 @@
     delphi 5.
 
   jean-jacques esquirol - thanks for pointing out the "result" address issue
-    when processing filename and comment flags/content in GZCompressStr.
+    when processing filename and comment flags/content in GZCompressStr; and
+    for pointing out the type differences with TGZTrailer.Crc (Cardinal) and
+    ZCrc32 (Longint).
+
+  graham wideman - thanks for beta testing GZDecompressStreamSize and
+    pointing out the position handling issue in GZDecompressStream.
+
+  marcin szafrański - thanks for beta testing the delphi 2009
+    changes.
+
+  iztok kacin - thanks for the CONDITIONALEXPRESSIONS, CompilerVersion changes,
+    and assisting me design and further improve support for delphi 2009.
 
 -- contents ------------------------------------------------------------------
 
   delphi files
 
-    zlibex.pas
     zlibex.inc
+    zlibex.pas
     zlibexgz.pas
 
   objects files used by zlibex.pas

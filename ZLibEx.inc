@@ -1,141 +1,146 @@
 {*****************************************************************************
-*  zlibex.inc                                                                *
-*  copyright (c) 2006 base2 technologies                                     *
+*  ZLibEx.inc                                                                *
+*  copyright (c) 2006-2009 base2 technologies                                *
 *                                                                            *
 *  version information for delphi/c++ builder                                *
+*                                                                            *
+*  revision history                                                          *
+*    2009.04.11  updated to use CONDITIONALEXPRESSIONS and CompilerVersion   *
+*    2009.01.28  updated for delphi 2009                                     *
+*    2007.10.01  updated for delphi 2007                                     *
+*    2005.11.29  created                                                     *
+*                                                                            *
+*  acknowledgments                                                           *
+*    iztok kacin                                                             *
+*      2009.04.11  CONDITIONALEXPRESSIONS and CompilerVersion changes        *
 *****************************************************************************}
 
-{** delphi ******************************************************************}
+{$ifndef CONDITIONALEXPRESSIONS}
 
-{$IFDEF VER80}              // delphi 1
-  {$DEFINE Delphi}
+  {** delphi ****************************************************************}
 
-  {$DEFINE Version1}
-{$ENDIF}
+  {$ifdef VER80}              // delphi 1
+    {$define Delphi}
 
-{$IFDEF VER90}              // delphi 2
-  {$DEFINE Delphi}
+    {$define Version1}
+  {$endif}
 
-  {$DEFINE Version2}
-{$ENDIF}
+  {$ifdef VER90}              // delphi 2
+    {$define Delphi}
 
-{$IFDEF VER100}             // delphi 3
-  {$DEFINE Delphi}
+    {$define Version2}
+  {$endif}
 
-  {$DEFINE Version3}
-{$ENDIF}
+  {$ifdef VER100}             // delphi 3
+    {$define Delphi}
 
-{$IFDEF VER120}             // delphi 4
-  {$DEFINE Delphi}
+    {$define Version3}
+  {$endif}
 
-  {$DEFINE Version4}
-{$ENDIF}
+  {$ifdef VER120}             // delphi 4
+    {$define Delphi}
 
-{** c++ builder *************************************************************}
+    {$define Version4}
+  {$endif}
 
-{$IFDEF VER93}              // c++ builder 1
-  {$DEFINE CBuilder}
+  {** c++ builder ***********************************************************}
 
-  {$DEFINE Version1}
-{$ENDIF}
+  {$ifdef VER93}              // c++ builder 1
+    {$define CBuilder}
 
-{$IFDEF VER110}             // c++ builder 3
-  {$DEFINE CBuilder}
+    {$define Version1}
+  {$endif}
 
-  {$DEFINE Version3}
-{$ENDIF}
+  {$ifdef VER110}             // c++ builder 3
+    {$define CBuilder}
 
-{$IFDEF VER125}             // c++ builder 4
-  {$DEFINE CBuilder}
+    {$define Version3}
+  {$endif}
 
-  {$DEFINE Version4}
-{$ENDIF}
+  {$ifdef VER125}             // c++ builder 4
+    {$define CBuilder}
 
-{** delphi/c++ builder (common) *********************************************}
+    {$define Version4}
+  {$endif}
 
-{$IFDEF VER130}             // delphi/c++ builder 5
-  {$IFDEF BCB}
-    {$DEFINE CBuilder}
+  {** delphi/c++ builder (common) *******************************************}
+
+  {$ifdef VER130}             // delphi/c++ builder 5
+    {$ifdef BCB}
+      {$define CBuilder}
+    {$ELSE}
+      {$define Delphi}
+    {$endif}
+
+    {$define Version5}
+
+    {$define Version5Plus}
+  {$endif}
+
+{$ELSE}
+
+  {$ifdef BCB}
+    {$define CBuilder}
   {$ELSE}
-    {$DEFINE Delphi}
-  {$ENDIF}
+    {$define Delphi}
+  {$endif}
 
-  {$DEFINE Version5}
+  {$define Version5Plus}
 
-  {$DEFINE Version5Plus}
-{$ENDIF}
+  {$if CompilerVersion >= 14.0}         // delphi 6
+    {$ifdef VER140}
+      {$define Version6}
+    {$endif}
 
-{$IFDEF VER140}             // delphi 6
-  {$IFDEF BCB}
-    {$DEFINE CBuilder}
-  {$ELSE}
-    {$DEFINE Delphi}
-  {$ENDIF}
+    {$define Version6Plus}
+  {$ifend}
 
-  {$DEFINE Version6}
+  {$if CompilerVersion >= 15.0}         // delphi 7
+    {$ifdef VER150}
+      {$define Version7}
+    {$endif}
 
-  {$DEFINE Version5Plus}
-  {$DEFINE Version6Plus}
-{$ENDIF}
+    {$define Version7Plus}
+  {$ifend}
 
-{$IFDEF VER150}             // delphi 7
-  {$IFDEF BCB}
-    {$DEFINE CBuilder}
-  {$ELSE}
-    {$DEFINE Delphi}
-  {$ENDIF}
+  {$if CompilerVersion >= 16.0}         // delphi 8 (.net)
+    {$ifdef VER160}
+      {$define Version8}
+    {$endif}
 
-  {$DEFINE Version7}
+    {$define Version8Plus}
+  {$ifend}
 
-  {$DEFINE Version5Plus}
-  {$DEFINE Version6Plus}
-  {$DEFINE Version7Plus}
-{$ENDIF}
+  {$if CompilerVersion >= 17.0}         // delphi 2005
+    {$ifdef VER170}
+      {$define Version2005}
+    {$endif}
 
-{$IFDEF VER160}             // delphi 8 (.net)
-  {$IFDEF BCB}
-    {$DEFINE CBuilder}
-  {$ELSE}
-    {$DEFINE Delphi}
-  {$ENDIF}
+    {$define Version2005Plus}
+  {$ifend}
 
-  {$DEFINE Version8}
+  {$if CompilerVersion >= 18.0}         // bds 2006
+    {$ifdef VER180}
+      {$define Version2006}
+    {$endif}
 
-  {$DEFINE Version5Plus}
-  {$DEFINE Version6Plus}
-  {$DEFINE Version7Plus}
-  {$DEFINE Version8Plus}
-{$ENDIF}
+    {$define Version2006Plus}
+  {$ifend}
 
-{$IFDEF VER170}             // delphi 2005
-  {$IFDEF BCB}
-    {$DEFINE CBuilder}
-  {$ELSE}
-    {$DEFINE Delphi}
-  {$ENDIF}
+  {$if CompilerVersion >= 18.5}         // bds 2007
+    {$ifdef VER185}
+      {$define Version2007}
+    {$endif}
 
-  {$DEFINE Version2005}
+    {$define Version2007Plus}
+  {$ifend}
 
-  {$DEFINE Version5Plus}
-  {$DEFINE Version6Plus}
-  {$DEFINE Version7Plus}
-  {$DEFINE Version8Plus}
-  {$DEFINE Version2005Plus}
-{$ENDIF}
+  {$if CompilerVersion >= 20.0}         // bds 2009
+    {$ifdef VER200}
+      {$define Version2009}
+    {$endif}
 
-{$IFDEF VER180}             // bds 2006
-  {$IFDEF BCB}
-    {$DEFINE CBuilder}
-  {$ELSE}
-    {$DEFINE Delphi}
-  {$ENDIF}
+    {$define Version2009Plus}
+  {$ifend}
 
-  {$DEFINE Version2006}
-
-  {$DEFINE Version5Plus}
-  {$DEFINE Version6Plus}
-  {$DEFINE Version7Plus}
-  {$DEFINE Version8Plus}
-  {$DEFINE Version2005Plus}
-  {$DEFINE Version2006Plus}
-{$ENDIF}
+{$endif}
