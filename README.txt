@@ -32,6 +32,9 @@
 
 -- history -------------------------------------------------------------------
 
+  2012.05.07  zlibexapi.pas
+                updated to zlib version 1.2.7
+
   2012.05.01  zlibex.inc
                 updated for delphi xe2 (2012)
 

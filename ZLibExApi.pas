@@ -5,6 +5,7 @@
 *  copyright (c) 1995-2002 Borland Software Corporation                                          *
 *                                                                                                *
 *  revision history                                                                              *
+*    2012.05.07  updated to zlib version 1.2.7                                                   *
 *    2012.03.05  udpated to zlib version 1.2.6                                                   *
 *    2010.04.20  updated to zlib version 1.2.5                                                   *
 *    2010.04.15  updated to zlib version 1.2.4                                                   *
@@ -37,12 +38,12 @@ interface
 const
   {** version ids *******************************************************************************}
 
-  ZLIB_VERSION         = '1.2.6';
-  ZLIB_VERNUM          = $1260;
+  ZLIB_VERSION         = '1.2.7';
+  ZLIB_VERNUM          = $1270;
 
   ZLIB_VER_MAJOR       = 1;
   ZLIB_VER_MINOR       = 2;
-  ZLIB_VER_REVISION    = 6;
+  ZLIB_VER_REVISION    = 7;
   ZLIB_VER_SUBREVISION = 0;
 
   {** compression methods ***********************************************************************}
