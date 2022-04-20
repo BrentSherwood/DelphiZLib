@@ -1,10 +1,11 @@
 {*****************************************************************************
 *  ZLibEx.inc                                                                *
-*  copyright (c) 2006-2009 base2 technologies                                *
+*  copyright (c) 2006-2010 base2 technologies                                *
 *                                                                            *
 *  version information for delphi/c++ builder                                *
 *                                                                            *
 *  revision history                                                          *
+*    2010.01.27  updated for delphi 2010                                     *
 *    2009.04.11  updated to use CONDITIONALEXPRESSIONS and CompilerVersion   *
 *    2009.01.28  updated for delphi 2009                                     *
 *    2007.10.01  updated for delphi 2007                                     *
@@ -19,25 +20,25 @@
 
   {** delphi ****************************************************************}
 
-  {$ifdef VER80}              // delphi 1
+  {$ifdef VER80}                        // delphi 1
     {$define Delphi}
 
     {$define Version1}
   {$endif}
 
-  {$ifdef VER90}              // delphi 2
+  {$ifdef VER90}                        // delphi 2
     {$define Delphi}
 
     {$define Version2}
   {$endif}
 
-  {$ifdef VER100}             // delphi 3
+  {$ifdef VER100}                       // delphi 3
     {$define Delphi}
 
     {$define Version3}
   {$endif}
 
-  {$ifdef VER120}             // delphi 4
+  {$ifdef VER120}                       // delphi 4
     {$define Delphi}
 
     {$define Version4}
@@ -45,19 +46,19 @@
 
   {** c++ builder ***********************************************************}
 
-  {$ifdef VER93}              // c++ builder 1
+  {$ifdef VER93}                        // c++ builder 1
     {$define CBuilder}
 
     {$define Version1}
   {$endif}
 
-  {$ifdef VER110}             // c++ builder 3
+  {$ifdef VER110}                       // c++ builder 3
     {$define CBuilder}
 
     {$define Version3}
   {$endif}
 
-  {$ifdef VER125}             // c++ builder 4
+  {$ifdef VER125}                       // c++ builder 4
     {$define CBuilder}
 
     {$define Version4}
@@ -65,7 +66,7 @@
 
   {** delphi/c++ builder (common) *******************************************}
 
-  {$ifdef VER130}             // delphi/c++ builder 5
+  {$ifdef VER130}                       // delphi/c++ builder 5
     {$ifdef BCB}
       {$define CBuilder}
     {$ELSE}
@@ -141,6 +142,14 @@
     {$endif}
 
     {$define Version2009Plus}
+  {$ifend}
+
+  {$if CompilerVersion >= 21.0}         // bds 2010
+    {$ifdef VER210}
+      {$define Version2010}
+    {$endif}
+
+    {$define Version2010Plus}
   {$ifend}
 
 {$endif}

@@ -1,29 +1,17 @@
 ﻿-- notes ---------------------------------------------------------------------
 
   the units included in this archive should work with delphi 5 through delphi
-  2009.
-
-  2009.04.14  the introduction of delphi 2009 and the native unicode support
-              has forced an internal design change with the string routines
-              found in the units.  to accommodate everyone, the current string
-              routines have been changed to be 100% backward compatible, i.e.
-              String was changed to AnsiString.  to allow for forward and
-              backward compatibility, each string function now has two
-              comparable string procedures -- one for AnsiString and one for
-              UnicodeString/WideString.
-
-  2001.10.26  if you previously downloaded my delphi 5 library, you will
-              notice that the unit has been renamed.  this was done because
-              borland began including a zlib.dcu file with delphi 6 and it was
-              more correct for me to rename my unit and have developers update
-              their code than to make developers deal with the file
-              contention.
+  2010.
 
   please contact me if you find any errors, make any changes, add new
   functionality, or have any general suggestions so that i may incorporate
   them into my version.  i can be reached via my website at
 
-    http://www.base2ti.com.
+    http://www.base2ti.com
+
+  or through my zlib newsgroup
+
+    news://www.base2ti.com/base2ti.delphi.zlib
 
   thanks.
   brent sherwood
@@ -47,6 +35,21 @@
   finally, "use" the zlibex and zlibexgz units as needed.
 
 -- history -------------------------------------------------------------------
+
+  2010.04.15  zlibex.pas
+                moved core zlib routines to separate unit (ZLibExApi.pas)
+
+              zlibexapi.pas
+                updated to zlib version 1.2.4
+
+  2010.01.27  zlibex.pas
+                updated for delphi 2010
+
+              zlibexgz.pas
+                updated for delphi 2010
+
+              zlibex.inc
+                updated for delphi 2010
 
   2009.04.14  zlibex.pas
                 added overloaded string routines for AnsiString and
@@ -223,14 +226,17 @@
     for pointing out the type differences with TGZTrailer.Crc (Cardinal) and
     ZCrc32 (Longint).
 
-  graham wideman - thanks for beta testing GZDecompressStreamSize and
-    pointing out the position handling issue in GZDecompressStream.
+  graham wideman - thanks for beta testing GZDecompressStreamSize and pointing
+    out the position handling issue in GZDecompressStream.
 
-  marcin szafrański - thanks for beta testing the delphi 2009
-    changes.
+  marcin szafrański - thanks for beta testing the delphi 2009 changes.
 
-  iztok kacin - thanks for the CONDITIONALEXPRESSIONS, CompilerVersion changes,
-    and assisting me design and further improve support for delphi 2009.
+  iztok kacin - thanks for the CONDITIONALEXPRESSIONS, CompilerVersion
+    changes, and assisting me design and further improve support for delphi
+    2009.
+
+  oleg matrozov - thanks for pointing out the missing loop condition
+    (avail_in > 0) in ZInternalCompress and ZInternalDecompress.
 
 -- contents ------------------------------------------------------------------
 
@@ -238,6 +244,7 @@
 
     zlibex.inc
     zlibex.pas
+    zlibexapi.pas
     zlibexgz.pas
 
   objects files used by zlibex.pas
@@ -252,12 +259,13 @@
     inftrees.obj
     trees.obj
 
-  c++ Builder 6 files
+  c++ builder 2007 files
 
-    DelphiZLib.bpr
-    DelphiZlib.cpp
+    delphizlib.bpr
+    delphizlib.cbproj
+    delphizlib.cpp
 
-  zlib 1.2.3 source files (http://www.zlib.net)
+  zlib 1.2.4 source files (http://www.zlib.net)
 
     adler32.c
     compress.c

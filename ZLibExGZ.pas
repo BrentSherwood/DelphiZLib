@@ -5,6 +5,7 @@
 *  copyright (c) 1995-2002 Borland Software Corporation                      *
 *                                                                            *
 *  revision history                                                          *
+*    2010.01.27  updated for delphi 2010                                     *
 *    2009.04.14  added overloaded string routines for AnsiString and         *
 *                  UnicodeString                                             *
 *                removed deprecated Z*G routines                             *
@@ -140,7 +141,7 @@ type
 *****************************************************************************}
 
 function  GZCompressStr(const s: AnsiString; const fileName,
-  comment: AnsiString; dateTime: TDateTime): AnsiString; overload;
+  comment: AnsiString; dateTime: TDateTime): RawByteString; overload;
 
 procedure GZCompressString(var result: RawByteString; const s: AnsiString;
   const fileName, comment: AnsiString; dateTime: TDateTime); overload;
@@ -148,7 +149,7 @@ procedure GZCompressString(var result: RawByteString; const s: AnsiString;
 procedure GZCompressString(var result: RawByteString; const s: UnicodeString;
   const fileName, comment: AnsiString; dateTime: TDateTime); overload;
 
-function  GZCompressStr(const s: AnsiString): AnsiString; overload;
+function  GZCompressStr(const s: AnsiString): RawByteString; overload;
 
 procedure GZCompressString(var result: RawByteString; const s: AnsiString);
   overload;
@@ -171,7 +172,7 @@ procedure GZCompressString(var result: RawByteString; const s: UnicodeString);
 *    uncompressed data string                                                *
 *****************************************************************************}
 
-function  GZDecompressStr(const s: AnsiString; var fileName,
+function  GZDecompressStr(const s: RawByteString; var fileName,
   comment: AnsiString; var dateTime: TDateTime): AnsiString; overload;
 
 procedure GZDecompressString(var result: AnsiString; const s: RawByteString;
@@ -181,7 +182,7 @@ procedure GZDecompressString(var result: UnicodeString;
   const s: RawByteString; var fileName, comment: AnsiString;
   var dateTime: TDateTime); overload;
 
-function  GZDecompressStr(const s: AnsiString): AnsiString; overload;
+function  GZDecompressStr(const s: RawByteString): AnsiString; overload;
 
 procedure GZDecompressString(var result: AnsiString; const s: RawByteString);
   overload;
@@ -219,6 +220,9 @@ procedure GZDecompressFile(const inFileName, outFolder: AnsiString;
 procedure GZDecompressFile(const inFileName, outFolder: AnsiString); overload;
 
 implementation
+
+uses
+  ZLibExApi;
 
 const
   GZ_ZLIB_WINDOWBITS = -15;
@@ -441,7 +445,7 @@ begin
 end;
 
 function GZCompressStr(const s: AnsiString; const fileName,
-  comment: AnsiString; dateTime: TDateTime): AnsiString;
+  comment: AnsiString; dateTime: TDateTime): RawByteString;
 begin
   GZCompressString(result, s, fileName, comment, dateTime);
 end;
@@ -488,7 +492,7 @@ begin
   GZFinalizeCompressString(result, crc, size);
 end;
 
-function GZCompressStr(const s: AnsiString): AnsiString;
+function GZCompressStr(const s: AnsiString): RawByteString;
 begin
   GZCompressString(result, s);
 end;
@@ -503,7 +507,7 @@ begin
   GZCompressString(result, s, '', '', 0);
 end;
 
-function GZDecompressStr(const s: AnsiString; var fileName,
+function GZDecompressStr(const s: RawByteString; var fileName,
   comment: AnsiString; var dateTime: TDateTime): AnsiString;
 begin
   GZDecompressString(result, s, fileName, comment, dateTime);
@@ -554,7 +558,7 @@ begin
   GZFinalizeDecompressString(s, crc, size);
 end;
 
-function GZDecompressStr(const s: AnsiString): AnsiString;
+function GZDecompressStr(const s: RawByteString): AnsiString;
 begin
   GZDecompressString(result, s);
 end;
