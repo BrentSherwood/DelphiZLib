@@ -27,6 +27,9 @@
   burak kalayci - thanks for emailing to inform me about the zlib 1.1.4
     update; and again for emailing about 1.2.1.
 
+  vicente s nchez-alarcos - thanks for emailing to inform me about the
+    zlib 1.2.2 update.
+
 -- installation --------------------------------------------------------------
 
   first, copy all of the files into a folder (for example, c:\delphi\zlib).
@@ -56,26 +59,23 @@
     DelphiZLib.bpr
     DelphiZlib.cpp
 
-  zlib 1.2.1 source files (http://www.gzip.org/zlib)
+zlib 1.2.2 source files (http://www.zlib.net)
 
     adler32.c
     compress.c
     crc32.c
     deflate.c
-    example.c
-    gzio.c
     infback.c
     inffast.c
     inflate.c
     inftrees.c
-    minigzip.c
     trees.c
-    uncompr.c
     zutil.c
+    crc32.h
     deflate.h
-    infback.h
     inffast.h
     inffixed.h
+    inflate.h
     inftrees.h
     trees.h
     zconf.h

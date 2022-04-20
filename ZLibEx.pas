@@ -1,10 +1,12 @@
 {*****************************************************************************
 *  ZLibEx.pas                                                                *
 *                                                                            *
-*  copyright (c) 2000-2003 base2 technologies                                *
+*  copyright (c) 2000-2005 base2 technologies                                *
 *  copyright (c) 1997 Borland International                                  *
 *                                                                            *
 *  revision history                                                          *
+*    2005.01.11  updated to zlib version 1.2.2                               *
+*                added ZCompressStrWeb                                       *
 *    2004.01.06  updated to zlib version 1.2.1                               *
 *    2003.04.14  added ZCompress2 and ZDecompress2                           *
 *                added ZCompressStr2 and ZDecompressStr2                     *
@@ -25,11 +27,18 @@
 *                  included on the delphi cd (zlib version 1.1.3)            *
 *                                                                            *
 *  acknowledgements                                                          *
-*    erik turner    Z*Stream routines                                        *
-*    david bennion  finding the nastly little endless loop quirk with the    *
-*                     TZDecompressionStream.Read method                      *
-*    burak kalayci  informing me about the zlib 1.1.4 update and the 1.2.1   *
-*                     update                                                 *
+*    erik turner                                                             *
+*      Z*Stream routines                                                     *
+*                                                                            *
+*    david bennion                                                           *
+*      finding the nastly little endless loop quirk with the                 *
+*        TZDecompressionStream.Read method                                   *
+*                                                                            *
+*    burak kalayci                                                           *
+*      informing me about the zlib 1.1.4 update and the 1.2.1 update         *
+*                                                                            *
+*    vicente s nchez-alarcos                                                 *
+*      informing me about the zlib 1.2.2 update                              *
 *****************************************************************************}
 
 unit ZLibEx;
@@ -40,8 +49,8 @@ uses
   Sysutils, Classes;
 
 const
-  ZLIB_VERSION = '1.2.1';
-  ZLIB_VERNUM  = $1210;
+  ZLIB_VERSION = '1.2.2';
+  ZLIB_VERNUM  = $1220;
 
 type
   TZAlloc = function (opaque: Pointer; items, size: Integer): Pointer;
@@ -217,6 +226,8 @@ function ZCompressStrEx(const s: String;
 
 function ZCompressStr2(const s: String; level: TZCompressionLevel;
   windowBits, memLevel: Integer; strategy: TZStrategy): String;
+
+function ZCompressStrWeb(const s: String): String;
 
 function ZDecompressStr(const s: String): String;
 
@@ -619,6 +630,11 @@ begin
   Move(buffer^,result[1],size);
 
   FreeMem(buffer);
+end;
+
+function ZCompressStrWeb(const s: String): String;
+begin
+  result := ZCompressStr2(s,zcFastest,-15,9,zsDefault);
 end;
 
 function ZDecompressStr(const s: String): String;
