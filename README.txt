@@ -1,7 +1,7 @@
 ﻿-- notes ---------------------------------------------------------------------
 
   the units included in this archive should work with delphi 5 through delphi
-  2010.
+  xe.
 
   please contact me if you find any errors, make any changes, add new
   functionality, or have any general suggestions so that i may incorporate
@@ -31,6 +31,18 @@
   finally, "use" the zlibex and zlibexgz units as needed.
 
 -- history -------------------------------------------------------------------
+
+  2012.05.01  zlibex.inc
+                updated for delphi xe2 (2012)
+
+  2012.03.05  zliexapi.pas
+                udpated to zlib version 1.2.6
+
+  2011.07.21  zlibex.pas
+                fixed routines to validate size before calling Move
+
+              zlibexgz.pas
+                fixed routines to validate size before calling Move
 
   2010.07.01  zlibex.pas
                 hide overloaded Z*String* routines for delphi 5
@@ -250,6 +262,13 @@
   edward koo - thanks for pointing out the delphi 5 incompatibility with the
    overloaded Z*String* routines.
 
+  farshad mohajeri - thank for the paypal donation
+
+  egron elbra - thanks for pointing out the range exception when moving empty
+    strings
+
+  tommi prami - thanks for emailing to inform me about the zlib 1.2.6 udpate
+
 -- contents ------------------------------------------------------------------
 
   delphi files
@@ -277,7 +296,7 @@
     delphizlib.cbproj
     delphizlib.cpp
 
-  zlib 1.2.4 source files (http://www.zlib.net)
+  zlib 1.2.6 source files (http://www.zlib.net)
 
     adler32.c
     compress.c

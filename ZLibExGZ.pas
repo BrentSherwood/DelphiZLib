@@ -1,65 +1,68 @@
-{*****************************************************************************
-*  ZLibExGZ.pas                                                              *
-*                                                                            *
-*  copyright (c) 2000-2009 base2 technologies                                *
-*  copyright (c) 1995-2002 Borland Software Corporation                      *
-*                                                                            *
-*  revision history                                                          *
-*    2010.01.27  updated for delphi 2010                                     *
-*    2009.04.14  added overloaded string routines for AnsiString and         *
-*                  UnicodeString                                             *
-*                removed deprecated Z*G routines                             *
-*    2009.01.28  updated for delphi 2009 String (UnicodeString)              *
-*    2008.05.15  added TGZCompressionStream and TGZDecompressionStream       *
-*    2007.11.06  changed TGZTrailer.Crc from Cardinal to Longint             *
-*    2007.10.01  added GZDecompressStreamSize                                *
-*                fixed GZDecompressStream position handling                  *
-*    2007.08.15  added GZCompressFile                                        *
-*    2007.07.18  fixed GZCompressStr filename and comment processing         *
-*    2007.03.18  modified naming convention for gzip routines GZ*            *
-*                deprecated previous gzip routines Z*G                       *
-*    2007.03.15  created separate unit for gzip routines/objects             *
-*                added ZDecompressStreamG                                    *
-*                added overloaded ZCompressStrG                              *
-*                added overloaded ZCompressStreamG                           *
-*    2007.02.24  added PWord declaration for delphi 5-                       *
-*    2006.08.10  added ZDecompressStrG                                       *
-*    2006.06.02  added DateTimeToUnix for delphi 5-                          *
-*    2006.03.27  added ZCompressStreamG                                      *
-*    2006.03.24  added ZCompressStrG                                         *
-*                                                                            *
-*  acknowledgments                                                           *
-*    ralf wenske                                                             *
-*      2006.03.24  prototyping and assisting with ZCompressStrG and          *
-*                    ZCompressStreamG                                        *
-*                                                                            *
-*    roman krupicka                                                          *
-*      2006.06.02  pointing out the DateUtils unit and the DateTimeToUnix    *
-*                    function wasn't available prior to delphi 6             *                     *
-*                                                                            *
-*    marcin treffler                                                         *
-*      2007.02.24  pointing out the missing PWord declaration for delphi 5   *
-*                                                                            *
-*    jean-jacques esquirol                                                   *
-*      2007.07.18  pointing out the "result" address issue when processing   *
-*                    filename and comment flags/content in GZCompressStr     *
-*      2007.11.06  pointing out the type differences with TGZTrailer.Crc     *
-*                    (Cardinal) and ZCrc32 (Longint)                         *
-*                                                                            *
-*    graham wideman                                                          *
-*      2007.10.01  beta testing GZDecompressStreamSize and pointing out the  *
-*                    position handling issue in GZDecompressStream           *
-*****************************************************************************}
+{*************************************************************************************************
+*  ZLibExGZ.pas                                                                                  *
+*                                                                                                *
+*  copyright (c) 2000-2011 base2 technologies                                                    *
+*  copyright (c) 1995-2002 Borland Software Corporation                                          *
+*                                                                                                *
+*  revision history                                                                              *
+*    2011.07.21  fixed routines to validate size before calling Move                             *
+*    2010.01.27  updated for delphi 2010                                                         *
+*    2009.04.14  added overloaded string routines for AnsiString and                             *
+*                  UnicodeString                                                                 *
+*                removed deprecated Z*G routines                                                 *
+*    2009.01.28  updated for delphi 2009 String (UnicodeString)                                  *
+*    2008.05.15  added TGZCompressionStream and TGZDecompressionStream                           *
+*    2007.11.06  changed TGZTrailer.Crc from Cardinal to Longint                                 *
+*    2007.10.01  added GZDecompressStreamSize                                                    *
+*                fixed GZDecompressStream position handling                                      *
+*    2007.08.15  added GZCompressFile                                                            *
+*    2007.07.18  fixed GZCompressStr filename and comment processing                             *
+*    2007.03.18  modified naming convention for gzip routines GZ*                                *
+*                deprecated previous gzip routines Z*G                                           *
+*    2007.03.15  created separate unit for gzip routines/objects                                 *
+*                added ZDecompressStreamG                                                        *
+*                added overloaded ZCompressStrG                                                  *
+*                added overloaded ZCompressStreamG                                               *
+*    2007.02.24  added PWord declaration for delphi 5-                                           *
+*    2006.08.10  added ZDecompressStrG                                                           *
+*    2006.06.02  added DateTimeToUnix for delphi 5-                                              *
+*    2006.03.27  added ZCompressStreamG                                                          *
+*    2006.03.24  added ZCompressStrG                                                             *
+*                                                                                                *
+*  acknowledgments                                                                               *
+*    ralf wenske                                                                                 *
+*      2006.03.24  prototyping and assisting with ZCompressStrG and                              *
+*                    ZCompressStreamG                                                            *
+*                                                                                                *
+*    roman krupicka                                                                              *
+*      2006.06.02  pointing out the DateUtils unit and the DateTimeToUnix                        *
+*                    function wasn't available prior to delphi 6                                 *                     *
+*                                                                                                *
+*    marcin treffler                                                                             *
+*      2007.02.24  pointing out the missing PWord declaration for delphi 5                       *
+*                                                                                                *
+*    jean-jacques esquirol                                                                       *
+*      2007.07.18  pointing out the "result" address issue when processing                       *
+*                    filename and comment flags/content in GZCompressStr                         *
+*      2007.11.06  pointing out the type differences with TGZTrailer.Crc                         *
+*                    (Cardinal) and ZCrc32 (Longint)                                             *
+*                                                                                                *
+*    graham wideman                                                                              *
+*      2007.10.01  beta testing GZDecompressStreamSize and pointing out the                      *
+*                    position handling issue in GZDecompressStream                               *
+*************************************************************************************************}
 
 unit ZLibExGZ;
 
 interface
 
+{$I ZLibEx.inc}
+
 uses
   ZLibEx, SysUtils, Classes {$IFDEF Version6Plus}, DateUtils {$ENDIF};
 
 type
-  {** TGZHeader *************************************************************}
+  {** TGZHeader *********************************************************************************}
 
   PGZHeader = ^TGZHeader;
   TGZHeader = packed record
@@ -72,7 +75,7 @@ type
     OS        : Byte;
   end;
 
-  {** TGZTrailer ************************************************************}
+  {** TGZTrailer ********************************************************************************}
 
   PGZTrailer = ^TGZTrailer;
   TGZTrailer = packed record
@@ -80,7 +83,7 @@ type
     Size: Cardinal;
   end;
 
-  {** TGZCompressionStream **************************************************}
+  {** TGZCompressionStream **********************************************************************}
 
   TGZCompressionStream = class(TZCompressionStream)
   private
@@ -104,7 +107,7 @@ type
     property DateTime: TDateTime  read FDateTime;
   end;
 
-  {** TGZDecompressionStream ************************************************}
+  {** TGZDecompressionStream ********************************************************************}
 
   TGZDecompressionStream = class(TZDecompressionStream)
   private
@@ -125,20 +128,20 @@ type
     property DateTime: TDateTime  read FDateTime;
   end;
 
-{** string routines *********************************************************}
+{** string routines *****************************************************************************}
 
-{*****************************************************************************
-*  GZCompressStr                                                             *
-*                                                                            *
-*  pre-conditions                                                            *
-*    s          = uncompressed data string                                   *
-*    fileName   = filename                                                   *
-*    comment    = comment                                                    *
-*    dateTime   = date/time                                                  *
-*                                                                            *
-*  return                                                                    *
-*    compressed data string in gzip format                                   *
-*****************************************************************************}
+{*************************************************************************************************
+*  GZCompressStr                                                                                 *
+*                                                                                                *
+*  pre-conditions                                                                                *
+*    s          = uncompressed data string                                                       *
+*    fileName   = filename                                                                       *
+*    comment    = comment                                                                        *
+*    dateTime   = date/time                                                                      *
+*                                                                                                *
+*  return                                                                                        *
+*    compressed data string in gzip format                                                       *
+*************************************************************************************************}
 
 function  GZCompressStr(const s: AnsiString; const fileName,
   comment: AnsiString; dateTime: TDateTime): RawByteString; overload;
@@ -146,31 +149,35 @@ function  GZCompressStr(const s: AnsiString; const fileName,
 procedure GZCompressString(var result: RawByteString; const s: AnsiString;
   const fileName, comment: AnsiString; dateTime: TDateTime); overload;
 
+{$ifdef Version6Plus}
 procedure GZCompressString(var result: RawByteString; const s: UnicodeString;
   const fileName, comment: AnsiString; dateTime: TDateTime); overload;
+{$endif}
 
 function  GZCompressStr(const s: AnsiString): RawByteString; overload;
 
 procedure GZCompressString(var result: RawByteString; const s: AnsiString);
   overload;
 
+{$ifdef Version6Plus}
 procedure GZCompressString(var result: RawByteString; const s: UnicodeString);
   overload;
+{$endif}
 
-{*****************************************************************************
-*  GZDecompressStr                                                           *
-*                                                                            *
-*  pre-conditions                                                            *
-*    s = compressed data string in gzip format                               *
-*                                                                            *
-*  post-conditions                                                           *
-*    fileName   = filename                                                   *
-*    comment    = comment                                                    *
-*    dateTime   = date/time                                                  *
-*                                                                            *
-*  return                                                                    *
-*    uncompressed data string                                                *
-*****************************************************************************}
+{*************************************************************************************************
+*  GZDecompressStr                                                                               *
+*                                                                                                *
+*  pre-conditions                                                                                *
+*    s = compressed data string in gzip format                                                   *
+*                                                                                                *
+*  post-conditions                                                                               *
+*    fileName   = filename                                                                       *
+*    comment    = comment                                                                        *
+*    dateTime   = date/time                                                                      *
+*                                                                                                *
+*  return                                                                                        *
+*    uncompressed data string                                                                    *
+*************************************************************************************************}
 
 function  GZDecompressStr(const s: RawByteString; var fileName,
   comment: AnsiString; var dateTime: TDateTime): AnsiString; overload;
@@ -178,19 +185,23 @@ function  GZDecompressStr(const s: RawByteString; var fileName,
 procedure GZDecompressString(var result: AnsiString; const s: RawByteString;
   var fileName, comment: AnsiString; var dateTime: TDateTime); overload;
 
+{$ifdef Version6Plus}
 procedure GZDecompressString(var result: UnicodeString;
   const s: RawByteString; var fileName, comment: AnsiString;
   var dateTime: TDateTime); overload;
+{$endif}
 
 function  GZDecompressStr(const s: RawByteString): AnsiString; overload;
 
 procedure GZDecompressString(var result: AnsiString; const s: RawByteString);
   overload;
 
+{$ifdef Version6Plus}
 procedure GZDecompressString(var result: UnicodeString;
   const s: RawByteString); overload;
+{$endif}
 
-{** stream routines *********************************************************}
+{** stream routines *****************************************************************************}
 
 procedure GZCompressStream(inStream, outStream: TStream; const fileName,
   comment: AnsiString; dateTime: TDateTime); overload;
@@ -207,7 +218,7 @@ function  GZDecompressStreamSize(inStream: TStream; var fileName,
 
 function  GZDecompressStreamSize(inStream: TStream): Longint; overload;
 
-{** file routines ***********************************************************}
+{** file routines *******************************************************************************}
 
 procedure GZCompressFile(const inFileName, outFileName,
   comment: AnsiString); overload;
@@ -248,7 +259,7 @@ type
 
 {$ENDIF}
 
-{** DateTimeToUnix **********************************************************}
+{** DateTimeToUnix ******************************************************************************}
 
 {$IFNDEF Version6Plus}
 
@@ -269,7 +280,7 @@ end;
 
 {$ENDIF}
 
-{** string routines *********************************************************}
+{** string routines *****************************************************************************}
 
 procedure GZInitializeCompressString(var result: RawByteString;
   const fileName, comment: AnsiString; dateTime: TDateTime);
@@ -387,7 +398,10 @@ begin
 
     SetLength(fileName, endIndex - index);
 
-    Move(s[index], fileName[1], endIndex - index);
+    if (endIndex - index) > 0 then
+    begin
+      Move(s[index], fileName[1], endIndex - index);
+    end;
 
     index := endIndex;
 
@@ -402,7 +416,11 @@ begin
     while (endIndex <= maxIndex) and (s[endIndex] <> #$00) do Inc(endIndex);
 
     SetLength(comment, endIndex - index);
-    Move(s[index], comment[1], endIndex - index);
+
+    if (endIndex - index) > 0 then
+    begin
+      Move(s[index], comment[1], endIndex - index);
+    end;
 
     index := endIndex;
 
@@ -471,6 +489,7 @@ begin
   GZFinalizeCompressString(result, crc, size);
 end;
 
+{$ifdef Version6Plus}
 procedure GZCompressString(var result: RawByteString; const s: UnicodeString;
   const fileName, comment: AnsiString; dateTime: TDateTime);
 var
@@ -491,6 +510,7 @@ begin
 
   GZFinalizeCompressString(result, crc, size);
 end;
+{$endif}
 
 function GZCompressStr(const s: AnsiString): RawByteString;
 begin
@@ -502,10 +522,12 @@ begin
   GZCompressString(result, s, '', '', 0);
 end;
 
+{$ifdef Version6Plus}
 procedure GZCompressString(var result: RawByteString; const s: UnicodeString);
 begin
   GZCompressString(result, s, '', '', 0);
 end;
+{$endif}
 
 function GZDecompressStr(const s: RawByteString; var fileName,
   comment: AnsiString; var dateTime: TDateTime): AnsiString;
@@ -535,6 +557,7 @@ begin
   GZFinalizeDecompressString(s, crc, size);
 end;
 
+{$ifdef Version6Plus}
 procedure GZDecompressString(var result: UnicodeString;
   const s: RawByteString; var fileName, comment: AnsiString;
   var dateTime: TDateTime);
@@ -557,6 +580,7 @@ begin
 
   GZFinalizeDecompressString(s, crc, size);
 end;
+{$endif}
 
 function GZDecompressStr(const s: RawByteString): AnsiString;
 begin
@@ -572,6 +596,7 @@ begin
   GZDecompressString(result, s, fileName, comment, dateTime);
 end;
 
+{$ifdef Version6Plus}
 procedure GZDecompressString(var result: UnicodeString;
   const s: RawByteString);
 var
@@ -581,8 +606,9 @@ var
 begin
   GZDecompressString(result, s, fileName, comment, dateTime);
 end;
+{$endif}
 
-{** stream routines *********************************************************}
+{** stream routines *****************************************************************************}
 
 procedure GZCompressStream(inStream, outStream: TStream; const fileName,
   comment: AnsiString; dateTime: TDateTime);
@@ -942,7 +968,7 @@ begin
   result := GZDecompressStreamSize(inStream,fileName,comment,dateTime);
 end;
 
-{** file routines ***********************************************************}
+{** file routines *******************************************************************************}
 
 procedure GZCompressFile(const inFileName, outFileName, comment: AnsiString);
 var
@@ -951,7 +977,7 @@ var
   fileName : AnsiString;
   dateTime : TDateTime;
 begin
-  inStream := TFileStream.Create(inFileName,fmOpenRead or fmShareDenyNone);
+  inStream := TFileStream.Create(inFileName, fmOpenRead or fmShareDenyNone);
 
   try
     dateTime := FileDateToDateTime(FileAge(inFileName));
@@ -1025,7 +1051,7 @@ begin
   GZDecompressFile(inFileName,outFolder,comment);
 end;
 
-{** TGZCompressionStream ****************************************************}
+{** TGZCompressionStream ************************************************************************}
 
 constructor TGZCompressionStream.Create(dest: TStream; const fileName,
   comment: AnsiString; dateTime: TDateTime);
@@ -1095,7 +1121,7 @@ begin
   FTrailer.Size := FTrailer.Size + Cardinal(result);
 end;
 
-{** TGZDecompressionStream **************************************************}
+{** TGZDecompressionStream **********************************************************************}
 
 constructor TGZDecompressionStream.Create(source: TStream);
 

@@ -1,28 +1,32 @@
-{*****************************************************************************
-*  ZLibExApi.pas                                                             *
-*                                                                            *
-*  copyright (c) 2000-2010 base2 technologies                                *
-*  copyright (c) 1995-2002 Borland Software Corporation                      *
-*                                                                            *
-*  revision history                                                          *
-*    2010.04.20  updated to zlib version 1.2.5                               *
-*    2010.04.15  updated to zlib version 1.2.4                               *
-*    2005.07.25  updated to zlib version 1.2.3                               *
-*    2005.01.11  updated to zlib version 1.2.2                               *
-*    2004.01.06  updated to zlib version 1.2.1                               *
-*    2002.03.15  updated to zlib version 1.1.4                               *
-*                                                                            *
-*  acknowledgments                                                           *
-*    burak kalayci                                                           *
-*      2002.03.15  informing me about the zlib 1.1.4 update                  *
-*      2004.01.06  informing me about the zlib 1.2.1 update                  *
-*                                                                            *
-*    vicente sanchez-alarcos                                                 *
-*      2005.01.11  informing me about the zlib 1.2.2 update                  *
-*                                                                            *
-*    mathijs van veluw                                                       *
-*      2005.07.25  informing me about the zlib 1.2.3 update                  *
-*****************************************************************************}
+{*************************************************************************************************
+*  ZLibExApi.pas                                                                                 *
+*                                                                                                *
+*  copyright (c) 2000-2012 base2 technologies                                                    *
+*  copyright (c) 1995-2002 Borland Software Corporation                                          *
+*                                                                                                *
+*  revision history                                                                              *
+*    2012.03.05  udpated to zlib version 1.2.6                                                   *
+*    2010.04.20  updated to zlib version 1.2.5                                                   *
+*    2010.04.15  updated to zlib version 1.2.4                                                   *
+*    2005.07.25  updated to zlib version 1.2.3                                                   *
+*    2005.01.11  updated to zlib version 1.2.2                                                   *
+*    2004.01.06  updated to zlib version 1.2.1                                                   *
+*    2002.03.15  updated to zlib version 1.1.4                                                   *
+*                                                                                                *
+*  acknowledgments                                                                               *
+*    burak kalayci                                                                               *
+*      2002.03.15  informing me about the zlib 1.1.4 update                                      *
+*      2004.01.06  informing me about the zlib 1.2.1 update                                      *
+*                                                                                                *
+*    vicente sanchez-alarcos                                                                     *
+*      2005.01.11  informing me about the zlib 1.2.2 update                                      *
+*                                                                                                *
+*    mathijs van veluw                                                                           *
+*      2005.07.25  informing me about the zlib 1.2.3 update                                      *
+*                                                                                                *
+*    tommi prami                                                                                 *
+*      2012.03.05  informing me about the zlib 1.2.6 update                                      *
+*************************************************************************************************}
 
 unit ZLibExApi;
 
@@ -31,21 +35,21 @@ interface
 {$I ZLibEx.inc}
 
 const
-  {** version ids ***********************************************************}
+  {** version ids *******************************************************************************}
 
-  ZLIB_VERSION         = '1.2.5';
-  ZLIB_VERNUM          = $1250;
+  ZLIB_VERSION         = '1.2.6';
+  ZLIB_VERNUM          = $1260;
 
   ZLIB_VER_MAJOR       = 1;
   ZLIB_VER_MINOR       = 2;
-  ZLIB_VER_REVISION    = 5;
+  ZLIB_VER_REVISION    = 6;
   ZLIB_VER_SUBREVISION = 0;
 
-  {** compression methods ***************************************************}
+  {** compression methods ***********************************************************************}
 
   Z_DEFLATED = 8;
 
-  {** information flags *****************************************************}
+  {** information flags *************************************************************************}
 
   Z_INFO_FLAG_SIZE  = $1;
   Z_INFO_FLAG_CRC   = $2;
@@ -54,7 +58,7 @@ const
   Z_INFO_NONE       = 0;
   Z_INFO_DEFAULT    = Z_INFO_FLAG_SIZE or Z_INFO_FLAG_CRC;
 
-  {** flush constants *******************************************************}
+  {** flush constants ***************************************************************************}
 
   Z_NO_FLUSH      = 0;
   Z_PARTIAL_FLUSH = 1;
@@ -64,7 +68,7 @@ const
   Z_BLOCK         = 5;
   Z_TREES         = 6;
 
-  {** return codes **********************************************************}
+  {** return codes ******************************************************************************}
 
   Z_OK            = 0;
   Z_STREAM_END    = 1;
@@ -76,14 +80,14 @@ const
   Z_BUF_ERROR     = (-5);
   Z_VERSION_ERROR = (-6);
 
-  {** compression levels ****************************************************}
+  {** compression levels ************************************************************************}
 
   Z_NO_COMPRESSION      =   0;
   Z_BEST_SPEED          =   1;
   Z_BEST_COMPRESSION    =   9;
   Z_DEFAULT_COMPRESSION = (-1);
 
-  {** compression strategies ************************************************}
+  {** compression strategies ********************************************************************}
 
   Z_FILTERED         = 1;
   Z_HUFFMAN_ONLY     = 2;
@@ -91,14 +95,14 @@ const
   Z_FIXED            = 4;
   Z_DEFAULT_STRATEGY = 0;
 
-  {** data types ************************************************************}
+  {** data types ********************************************************************************}
 
   Z_BINARY  = 0;
   Z_ASCII   = 1;
   Z_TEXT    = Z_ASCII;
   Z_UNKNOWN = 2;
 
-  {** return code messages **************************************************}
+  {** return code messages **********************************************************************}
 
   _z_errmsg: Array [0..9] of String = (
     'Need dictionary',      // Z_NEED_DICT      (2)
@@ -117,7 +121,7 @@ type
   TZAlloc = function (opaque: Pointer; items, size: Integer): Pointer;
   TZFree  = procedure (opaque, block: Pointer);
 
-  {** TZStreamRec ***********************************************************}
+  {** TZStreamRec *******************************************************************************}
 
   TZStreamRec = packed record
     next_in  : Pointer;   // next input byte
@@ -140,7 +144,7 @@ type
     reserved : Longint;   // reserved for future use
   end;
 
-{** macros ******************************************************************}
+{** macros **************************************************************************************}
 
 function deflateInit(var strm: TZStreamRec; level: Integer): Integer;
   {$ifdef Version2005Plus} inline; {$endif}
@@ -155,7 +159,7 @@ function inflateInit(var strm: TZStreamRec): Integer;
 function inflateInit2(var strm: TZStreamRec; windowBits: Integer): Integer;
   {$ifdef Version2005Plus} inline; {$endif}
 
-{** external routines *******************************************************}
+{** external routines ***************************************************************************}
 
 function deflateInit_(var strm: TZStreamRec; level: Integer;
   version: PAnsiChar; recsize: Integer): Integer;
@@ -187,15 +191,15 @@ function crc32(crc: Longint; const buf; len: Integer): Longint;
 
 implementation
 
-{*****************************************************************************
-*  link zlib code                                                            *
-*                                                                            *
-*  bcc32 flags                                                               *
-*    -c -O2 -Ve -X -pr -a8 -b -d -k- -vi -tWM                                *
-*                                                                            *
-*  note: do not reorder the following -- doing so will result in external    *
-*  functions being undefined                                                 *
-*****************************************************************************}
+{*************************************************************************************************
+*  link zlib code                                                                                *
+*                                                                                                *
+*  bcc32 flags                                                                                   *
+*    -c -O2 -Ve -X -pr -a8 -b -d -k- -vi -tWM                                                    *
+*                                                                                                *
+*  note: do not reorder the following -- doing so will result in external                        *
+*  functions being undefined                                                                     *
+*************************************************************************************************}
 
 {$L deflate.obj}
 {$L inflate.obj}
@@ -207,7 +211,7 @@ implementation
 {$L adler32.obj}
 {$L crc32.obj}
 
-{** macros ******************************************************************}
+{** macros **************************************************************************************}
 
 function deflateInit(var strm: TZStreamRec; level: Integer): Integer;
 begin
@@ -232,7 +236,7 @@ begin
     SizeOf(TZStreamRec));
 end;
 
-{** external routines *******************************************************}
+{** external routines ***************************************************************************}
 
 function deflateInit_(var strm: TZStreamRec; level: Integer;
   version: PAnsiChar; recsize: Integer): Integer;
@@ -274,7 +278,7 @@ function adler32(adler: Longint; const buf; len: Integer): Longint;
 function crc32(crc: Longint; const buf; len: Integer): Longint;
   external;
 
-{** zlib function implementations *******************************************}
+{** zlib function implementations ***************************************************************}
 
 function zcalloc(opaque: Pointer; items, size: Integer): Pointer;
 begin
@@ -286,16 +290,23 @@ begin
   FreeMem(block);
 end;
 
-{** c function implementations **********************************************}
+{** c function implementations ******************************************************************}
 
-procedure _memset(p: Pointer; b: Byte; count: Integer); cdecl;
+function _memset(p: Pointer; b: Byte; count: Integer): Pointer; cdecl;
 begin
-  FillChar(p^,count,b);
+  FillChar(p^, count, b);
+
+  result := p;
 end;
 
 procedure _memcpy(dest, source: Pointer; count: Integer); cdecl;
 begin
-  Move(source^,dest^,count);
+  Move(source^, dest^, count);
+end;
+
+procedure __llmod;
+asm
+  jmp System.@_llmod;
 end;
 
 end.

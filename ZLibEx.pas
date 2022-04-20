@@ -1,97 +1,97 @@
-{*****************************************************************************
-*  ZLibEx.pas                                                                *
-*                                                                            *
-*  copyright (c) 2000-2010 base2 technologies                                *
-*  copyright (c) 1995-2002 Borland Software Corporation                      *
-*                                                                            *
-*  revision history                                                          *
-*    2010.07.01  hide overloaded Z*String* routines for delphi 5             *
-*    2010.05.02  added ZDelfateEx and ZInflateEx                             *
-*    2010.04.20  added TZ*Buffer classes                                     *
-*    2010.04.15  moved core zlib routines to separate unit (ZLibExApi.pas)   *
-*                added ZDeflate* and ZInflate*                               *
-*    2010.04.14  fixed ZInternalCompress loops                               *
-*                fixed ZInternalDecompress loops                             *
-*                updated ZInternalCompressStream loops                       *
-*                updated ZInternalDecompressStream loops                     *
-*    2010.01.27  updated for delphi 2010                                     *
-*    2009.04.14  added overloaded string routines for AnsiString and         *
-*                  UnicodeString                                             *
-*    2009.01.28  updated for delphi 2009 String (UnicodeString)              *
-*    2008.05.15  added TStreamPos type for Stream.Position variants          *
-*                added TCustomZStream.Stream* methods                        *
-*    2007.08.17  modified TZCompressionStream.Write to use Write instead of  *
-*                  WriteBuffer                                               *
-*    2007.03.15  moved gzip routines to separate unit (ZLibExGZ.pas)         *
-*    2006.10.07  fixed EZLibError constructor for c++ builder compatibility  *
-*    2006.03.28  moved Z_DEFLATED to interface section                       *
-*                added custom compression levels zcLevel1 thru zcLevel9      *
-*    2006.03.27  added ZCompressStreamWeb                                    *
-*    2006.03.24  added ZAdler32 and ZCrc32                                   *
-*    2005.11.29  changed FStreamPos to Int64 for delphi 6+                   *
-*    2005.03.04  modified ZInternalCompressStream loops                      *
-*                modified ZInternalDecompressStream loops                    *
-*    2005.02.07  fixed ZInternalCompressStream loop conditions               *
-*                fixed ZInternalDecompressStream loop conditions             *
-*    2005.01.11  added ZCompressStrWeb                                       *
-*    2003.04.14  added ZCompress2 and ZDecompress2                           *
-*                added ZCompressStr2 and ZDecompressStr2                     *
-*                added ZCompressStream2 and ZDecompressStream2               *
-*                added overloaded T*Stream constructors to support           *
-*                  InflateInit2 and DeflateInit2                             *
-*                fixed ZDecompressStream to use ZDecompressCheck instead of  *
-*                  ZCompressCheck                                            *
-*    2001.11.27  enhanced TZDecompressionStream.Read to adjust source        *
-*                  stream position upon end of compression data              *
-*                fixed endless loop in TZDecompressionStream.Read when       *
-*                  destination count was greater than uncompressed data      *
-*    2001.10.26  renamed unit to integrate "nicely" with delphi 6            *
-*    2000.11.24  added soFromEnd condition to TZDecompressionStream.Seek     *
-*                added ZCompressStream and ZDecompressStream                 *
-*    2000.06.13  optimized, fixed, rewrote, and enhanced the zlib.pas unit   *
-*                  included on the delphi cd (zlib version 1.1.3)            *
-*                                                                            *
-*  acknowledgments                                                           *
-*    erik turner                                                             *
-*      2001.10.26  Z*Stream routines                                         *
-*                                                                            *
-*    david bennion                                                           *
-*      2001.11.27  finding the nasty little endless loop quirk with the      *
-*                    TZDecompressionStream.Read method                       *
-*                                                                            *
-*    luigi sandon                                                            *
-*      2005.02.07  pointing out the missing loop condition (Z_STREAM_END)    *
-*                    in ZInternalCompressStream and                          *
-*                    ZInternalDecompressStream                               *
-*                                                                            *
-*    ferry van genderen                                                      *
-*      2005.03.04  assisting me fine tune and beta test                      *
-*                    ZInternalCompressStream and ZInternalDecompressStream   *
-*                                                                            *
-*    j. rathlev                                                              *
-*      2005.11.28  pointing out the FStreamPos and TStream.Position type     *
-*                    inconsistency                                           *
-*                                                                            *
-*    anders johansen                                                         *
-*      2006.10.07  pointing out the ELibError constructor incompatibility    *
-*                    with c++ builder                                        *
-*                                                                            *
-*    marcin szafranski                                                       *
-*      2009.01.28  beta testing the delphi 2009 changes                      *
-*                                                                            *
-*    iztok kacin                                                             *
-*      2009.04.14  assisting me design and further improve support for       *
-*                    delphi 2009                                             *
-*                                                                            *
-*    oleg matrozov                                                           *
-*      2010.04.14  pointing out the missing loop condition (avail_in > 0)    *
-*                    in ZInternalCompress and ZInternalDecompress            *
-*      2010.04.20  prototyping and assisting with the TZ*Buffer classes      *
-*                                                                            *
-*    edward koo                                                              *
-*      2010.07.01  pointing out the delphi 5 incompatibility with the        *
-*                    overloaded Z*String* routines                           *
-*****************************************************************************}
+{*************************************************************************************************
+*  ZLibEx.pas                                                                                    *
+*                                                                                                *
+*  copyright (c) 2000-2011 base2 technologies                                                    *
+*  copyright (c) 1995-2002 Borland Software Corporation                                          *
+*                                                                                                *
+*  revision history                                                                              *
+*    2011.07.21  fixed routines to validate size before calling Move                             *
+*    2010.07.01  hide overloaded Z*String* routines for delphi 5                                 *
+*    2010.05.02  added ZDelfateEx and ZInflateEx                                                 *
+*    2010.04.20  added TZ*Buffer classes                                                         *
+*    2010.04.15  moved core zlib routines to separate unit (ZLibExApi.pas)                       *
+*                added ZDeflate* and ZInflate*                                                   *
+*    2010.04.14  fixed ZInternalCompress loops                                                   *
+*                fixed ZInternalDecompress loops                                                 *
+*                updated ZInternalCompressStream loops                                           *
+*                updated ZInternalDecompressStream loops                                         *
+*    2010.01.27  updated for delphi 2010                                                         *
+*    2009.04.14  added overloaded string routines for AnsiString and UnicodeString               *
+*    2009.01.28  updated for delphi 2009 String (UnicodeString)                                  *
+*    2008.05.15  added TStreamPos type for Stream.Position variants                              *
+*                added TCustomZStream.Stream* methods                                            *
+*    2007.08.17  modified TZCompressionStream.Write to use Write instead of WriteBuffer          *
+*    2007.03.15  moved gzip routines to separate unit (ZLibExGZ.pas)                             *
+*    2006.10.07  fixed EZLibError constructor for c++ builder compatibility                      *
+*    2006.03.28  moved Z_DEFLATED to interface section                                           *
+*                added custom compression levels zcLevel1 thru zcLevel9                          *
+*    2006.03.27  added ZCompressStreamWeb                                                        *
+*    2006.03.24  added ZAdler32 and ZCrc32                                                       *
+*    2005.11.29  changed FStreamPos to Int64 for delphi 6+                                       *
+*    2005.03.04  modified ZInternalCompressStream loops                                          *
+*                modified ZInternalDecompressStream loops                                        *
+*    2005.02.07  fixed ZInternalCompressStream loop conditions                                   *
+*                fixed ZInternalDecompressStream loop conditions                                 *
+*    2005.01.11  added ZCompressStrWeb                                                           *
+*    2003.04.14  added ZCompress2 and ZDecompress2                                               *
+*                added ZCompressStr2 and ZDecompressStr2                                         *
+*                added ZCompressStream2 and ZDecompressStream2                                   *
+*                added overloaded T*Stream constructors to support InflateInit2                  *
+*                  and DeflateInit2                                                              *
+*                fixed ZDecompressStream to use ZDecompressCheck instead of ZCompressCheck       *
+*    2001.11.27  enhanced TZDecompressionStream.Read to adjust source stream position upon end   *
+*                  of compression data                                                           *
+*                fixed endless loop in TZDecompressionStream.Read when destination count was     *
+*                  greater than uncompressed data                                                *
+*    2001.10.26  renamed unit to integrate "nicely" with delphi 6                                *
+*    2000.11.24  added soFromEnd condition to TZDecompressionStream.Seek                         *
+*                added ZCompressStream and ZDecompressStream                                     *
+*    2000.06.13  optimized, fixed, rewrote, and enhanced the zlib.pas unit included on the       *
+*                  delphi cd (zlib version 1.1.3)                                                *
+*                                                                                                *
+*  acknowledgments                                                                               *
+*    erik turner                                                                                 *
+*      2001.10.26  Z*Stream routines                                                             *
+*                                                                                                *
+*    david bennion                                                                               *
+*      2001.11.27  finding the nasty little endless loop quirk with the                          *
+*                    TZDecompressionStream.Read method                                           *
+*                                                                                                *
+*    luigi sandon                                                                                *
+*      2005.02.07  pointing out the missing loop condition (Z_STREAM_END) in                     *
+*                    ZInternalCompressStream and ZInternalDecompressStream                       *
+*                                                                                                *
+*    ferry van genderen                                                                          *
+*      2005.03.04  assisting me fine tune and beta test ZInternalCompressStream and              *
+*                    ZInternalDecompressStream                                                   *
+*                                                                                                *
+*    j. rathlev                                                                                  *
+*      2005.11.28  pointing out the FStreamPos and TStream.Position type inconsistency           *                                                    *
+*                                                                                                *
+*    anders johansen                                                                             *
+*      2006.10.07  pointing out the ELibError constructor incompatibility with c++ builder       *                                                     *
+*                                                                                                *
+*    marcin szafranski                                                                           *
+*      2009.01.28  beta testing the delphi 2009 changes                                          *
+*                                                                                                *
+*    iztok kacin                                                                                 *
+*      2009.04.14  assisting me design and further improve support for delphi 2009               *                                                  *
+*                                                                                                *
+*    oleg matrozov                                                                               *
+*      2010.04.14  pointing out the missing loop condition (avail_in > 0) in ZInternalCompress   *
+*                    and ZInternalDecompress                                                     *
+*      2010.04.20  prototyping and assisting with the TZ*Buffer classes                          *
+*                                                                                                *
+*    edward koo                                                                                  *
+*      2010.07.01  pointing out the delphi 5 incompatibility with the overloaded Z*String*       *
+*                    routines                                                                    *
+*                                                                                                *
+*    farshad mohajeri                                                                            *
+*      2011.05.06  paypal donation                                                               *
+*                                                                                                *
+*    egron elbra                                                                                 *
+*      2011.07.20  pointing out the range exception when moving empty strings                    *
+*************************************************************************************************}
 
 unit ZLibEx;
 
@@ -207,7 +207,7 @@ const
   );
 
 type
-  {** TZ*Function ***********************************************************}
+  {** TZ*Function *******************************************************************************}
 
   TZReadFunction = function (param: Pointer; var buffer;
     size: Integer): Integer;
@@ -215,7 +215,7 @@ type
   TZWriteFunction = function (param: Pointer; const buffer;
     size: Integer): Integer;
 
-  {** TZInformation *********************************************************}
+  {** TZInformation *****************************************************************************}
 
   TZInformation = packed record
     CompressedFlags  : Longint;
@@ -229,7 +229,7 @@ type
     UncompressedAdler: Longint;
   end;
 
-  {** TCustomZStream ********************************************************}
+  {** TCustomZStream ****************************************************************************}
 
   TCustomZStream = class(TStream)
   private
@@ -259,7 +259,7 @@ type
     property OnProgress: TNotifyEvent read FOnProgress write FOnProgress;
   end;
 
-  {** TZCompressionStream ***************************************************}
+  {** TZCompressionStream ***********************************************************************}
 
   TZCompressionStream = class(TCustomZStream)
   private
@@ -281,7 +281,7 @@ type
     property OnProgress;
   end;
 
-  {** TZDecompressionStream *************************************************}
+  {** TZDecompressionStream *********************************************************************}
 
   TZDecompressionStream = class(TCustomZStream)
   public
@@ -297,7 +297,7 @@ type
     property OnProgress;
   end;
 
-  {** TZCustomBuffer ********************************************************}
+  {** TZCustomBuffer ****************************************************************************}
 
   TZCustomBuffer = class(TObject)
   private
@@ -330,7 +330,7 @@ type
     function  Read(var s: AnsiString): Integer; overload;
   end;
 
-  {** TZCompressionBuffer ***************************************************}
+  {** TZCompressionBuffer ***********************************************************************}
 
   TZCompressionBuffer = class(TZCustomBuffer)
   public
@@ -348,7 +348,7 @@ type
       override;
   end;
 
-  {** TZDecompressionBuffer *************************************************}
+  {** TZDecompressionBuffer *********************************************************************}
 
   TZDecompressionBuffer = class(TZCustomBuffer)
   public
@@ -362,7 +362,7 @@ type
     function  Write(const buffer: Pointer; size: Integer): Integer; override;
   end;
 
-{** zlib deflate routines ***************************************************}
+{** zlib deflate routines ***********************************************************************}
 
 function  ZDeflateInit(var stream: TZStreamRec;
   level: TZCompressionLevel): Integer;
@@ -382,7 +382,7 @@ function  ZDeflateEnd(var stream: TZStreamRec): Integer;
 function  ZDeflateReset(var stream: TZStreamRec): Integer;
   {$ifdef Version2005Plus} inline; {$endif}
 
-{** zlib inflate routines ***************************************************}
+{** zlib inflate routines ***********************************************************************}
 
 function  ZInflateInit(var stream: TZStreamRec): Integer;
   {$ifdef Version2005Plus} inline; {$endif}
@@ -400,7 +400,7 @@ function  ZInflateEnd(var stream: TZStreamRec): Integer;
 function  ZInflateReset(var stream: TZStreamRec): Integer;
   {$ifdef Version2005Plus} inline; {$endif}
 
-{** zlib checksum routines **************************************************}
+{** zlib checksum routines **********************************************************************}
 
 function  ZAdler32(adler: Longint; const buffer; size: Integer): Longint;
   {$ifdef Version2005Plus} inline; {$endif}
@@ -408,7 +408,7 @@ function  ZAdler32(adler: Longint; const buffer; size: Integer): Longint;
 function  ZCrc32(crc: Longint; const buffer; size: Integer): Longint;
   {$ifdef Version2005Plus} inline; {$endif}
 
-{** zlib custom routines ****************************************************}
+{** zlib custom routines ************************************************************************}
 
 procedure ZDeflateEx(var stream: TZStreamRec; param: Pointer;
   read: TZReadFunction; write: TZWriteFunction; flush: TZFlush);
@@ -416,94 +416,94 @@ procedure ZDeflateEx(var stream: TZStreamRec; param: Pointer;
 procedure ZInflateEx(var stream: TZStreamRec; param: Pointer;
   read: TZReadFunction; write: TZWriteFunction; flush: TZFlush);
 
-{*****************************************************************************
-*  ZCompress                                                                 *
-*                                                                            *
-*  pre-conditions                                                            *
-*    inBuffer  = pointer to uncompressed data                                *
-*    inSize    = size of inBuffer (bytes)                                    *
-*    outBuffer = pointer (unallocated)                                       *
-*    level     = compression level                                           *
-*                                                                            *
-*  post-conditions                                                           *
-*    outBuffer = pointer to compressed data (allocated)                      *
-*    outSize   = size of outBuffer (bytes)                                   *
-*****************************************************************************}
+{*************************************************************************************************
+*  ZCompress                                                                                     *
+*                                                                                                *
+*  pre-conditions                                                                                *
+*    inBuffer  = pointer to uncompressed data                                                    *
+*    inSize    = size of inBuffer (bytes)                                                        *
+*    outBuffer = pointer (unallocated)                                                           *
+*    level     = compression level                                                               *
+*                                                                                                *
+*  post-conditions                                                                               *
+*    outBuffer = pointer to compressed data (allocated)                                          *
+*    outSize   = size of outBuffer (bytes)                                                       *
+*************************************************************************************************}
 
 procedure ZCompress(const inBuffer: Pointer; inSize: Integer;
   out outBuffer: Pointer; out outSize: Integer;
   level: TZCompressionLevel = zcDefault);
 
-{*****************************************************************************
-*  ZCompress2                                                                *
-*                                                                            *
-*  pre-conditions                                                            *
-*    inBuffer   = pointer to uncompressed data                               *
-*    inSize     = size of inBuffer (bytes)                                   *
-*    outBuffer  = pointer (unallocated)                                      *
-*    level      = compression level                                          *
-*    method     = compression method                                         *
-*    windowBits = window bits                                                *
-*    memLevel   = memory level                                               *
-*    strategy   = compression strategy                                       *
-*                                                                            *
-*  post-conditions                                                           *
-*    outBuffer = pointer to compressed data (allocated)                      *
-*    outSize   = size of outBuffer (bytes)                                   *
-*****************************************************************************}
+{*************************************************************************************************
+*  ZCompress2                                                                                    *
+*                                                                                                *
+*  pre-conditions                                                                                *
+*    inBuffer   = pointer to uncompressed data                                                   *
+*    inSize     = size of inBuffer (bytes)                                                       *
+*    outBuffer  = pointer (unallocated)                                                          *
+*    level      = compression level                                                              *
+*    method     = compression method                                                             *
+*    windowBits = window bits                                                                    *
+*    memLevel   = memory level                                                                   *
+*    strategy   = compression strategy                                                           *
+*                                                                                                *
+*  post-conditions                                                                               *
+*    outBuffer = pointer to compressed data (allocated)                                          *
+*    outSize   = size of outBuffer (bytes)                                                       *
+*************************************************************************************************}
 
 procedure ZCompress2(const inBuffer: Pointer; inSize: Integer;
   out outBuffer: Pointer; out outSize: Integer; level: TZCompressionLevel;
   windowBits, memLevel: Integer; strategy: TZStrategy);
 
-{*****************************************************************************
-*  ZDecompress                                                               *
-*                                                                            *
-*  pre-conditions                                                            *
-*    inBuffer    = pointer to compressed data                                *
-*    inSize      = size of inBuffer (bytes)                                  *
-*    outBuffer   = pointer (unallocated)                                     *
-*    outEstimate = estimated size of uncompressed data (bytes)               *
-*                                                                            *
-*  post-conditions                                                           *
-*    outBuffer = pointer to decompressed data (allocated)                    *
-*    outSize   = size of outBuffer (bytes)                                   *
-*****************************************************************************}
+{*************************************************************************************************
+*  ZDecompress                                                                                   *
+*                                                                                                *
+*  pre-conditions                                                                                *
+*    inBuffer    = pointer to compressed data                                                    *
+*    inSize      = size of inBuffer (bytes)                                                      *
+*    outBuffer   = pointer (unallocated)                                                         *
+*    outEstimate = estimated size of uncompressed data (bytes)                                   *
+*                                                                                                *
+*  post-conditions                                                                               *
+*    outBuffer = pointer to decompressed data (allocated)                                        *
+*    outSize   = size of outBuffer (bytes)                                                       *
+*************************************************************************************************}
 
 procedure ZDecompress(const inBuffer: Pointer; inSize: Integer;
  out outBuffer: Pointer; out outSize: Integer; outEstimate: Integer = 0);
 
-{*****************************************************************************
-*  ZDecompress2                                                              *
-*                                                                            *
-*  pre-conditions                                                            *
-*    inBuffer    = pointer to compressed data                                *
-*    inSize      = size of inBuffer (bytes)                                  *
-*    outBuffer   = pointer (unallocated)                                     *
-*    windowBits  = window bits                                               *
-*    outEstimate = estimated size of uncompressed data (bytes)               *
-*                                                                            *
-*  post-conditions                                                           *
-*    outBuffer = pointer to decompressed data (allocated)                    *
-*    outSize   = size of outBuffer (bytes)                                   *
-*****************************************************************************}
+{*************************************************************************************************
+*  ZDecompress2                                                                                  *
+*                                                                                                *
+*  pre-conditions                                                                                *
+*    inBuffer    = pointer to compressed data                                                    *
+*    inSize      = size of inBuffer (bytes)                                                      *
+*    outBuffer   = pointer (unallocated)                                                         *
+*    windowBits  = window bits                                                                   *
+*    outEstimate = estimated size of uncompressed data (bytes)                                   *
+*                                                                                                *
+*  post-conditions                                                                               *
+*    outBuffer = pointer to decompressed data (allocated)                                        *
+*    outSize   = size of outBuffer (bytes)                                                       *
+*************************************************************************************************}
 
 procedure ZDecompress2(const inBuffer: Pointer; inSize: Integer;
  out outBuffer: Pointer; out outSize: Integer; windowBits: Integer;
  outEstimate: Integer = 0);
 
-{** string routines *********************************************************}
+{** string routines *****************************************************************************}
 
-{*****************************************************************************
-*  ZCompressStr                                                              *
-*                                                                            *
-*  pre-conditions                                                            *
-*    s     = uncompressed data string                                        *
-*    level = compression level                                               *
-*                                                                            *
-*  return                                                                    *
-*    compressed data string                                                  *
-*****************************************************************************}
+{*************************************************************************************************
+*  ZCompressStr                                                                                  *
+*                                                                                                *
+*  pre-conditions                                                                                *
+*    s     = uncompressed data string                                                            *
+*    level = compression level                                                                   *
+*                                                                                                *
+*  return                                                                                        *
+*    compressed data string                                                                      *
+*************************************************************************************************}
 
 function  ZCompressStr(const s: AnsiString;
   level: TZCompressionLevel = zcDefault): RawByteString;
@@ -516,17 +516,17 @@ procedure ZCompressString(var result: RawByteString; const s: UnicodeString;
   level: TZCompressionLevel = zcDefault); overload;
 {$endif}
 
-{*****************************************************************************
-*  ZCompressStrEx                                                            *
-*                                                                            *
-*  pre-conditions                                                            *
-*    s     = uncompressed data string                                        *
-*    level = compression level                                               *
-*                                                                            *
-*  return                                                                    *
-*    compressed data string with 4 byte (integer) header indicating          *
-*    original uncompressed data length                                       *
-*****************************************************************************}
+{*************************************************************************************************
+*  ZCompressStrEx                                                                                *
+*                                                                                                *
+*  pre-conditions                                                                                *
+*    s     = uncompressed data string                                                            *
+*    level = compression level                                                                   *
+*                                                                                                *
+*  return                                                                                        *
+*    compressed data string with 4 byte (integer) header indicating                              *
+*    original uncompressed data length                                                           *
+*************************************************************************************************}
 
 function  ZCompressStrEx(const s: AnsiString;
   level: TZCompressionLevel = zcDefault): RawByteString;
@@ -539,19 +539,19 @@ procedure ZCompressStringEx(var result: RawByteString; const s: UnicodeString;
   level: TZCompressionLevel = zcDefault); overload;
 {$endif}
 
-{*****************************************************************************
-*  ZCompressStr2                                                             *
-*                                                                            *
-*  pre-conditions                                                            *
-*    s          = uncompressed data string                                   *
-*    level      = compression level                                          *
-*    windowBits = window bits                                                *
-*    memLevel   = memory level                                               *
-*    strategy   = compression strategy                                       *
-*                                                                            *
-*  return                                                                    *
-*    compressed data string                                                  *
-*****************************************************************************}
+{*************************************************************************************************
+*  ZCompressStr2                                                                                 *
+*                                                                                                *
+*  pre-conditions                                                                                *
+*    s          = uncompressed data string                                                       *
+*    level      = compression level                                                              *
+*    windowBits = window bits                                                                    *
+*    memLevel   = memory level                                                                   *
+*    strategy   = compression strategy                                                           *
+*                                                                                                *
+*  return                                                                                        *
+*    compressed data string                                                                      *
+*************************************************************************************************}
 
 function  ZCompressStr2(const s: AnsiString; level: TZCompressionLevel;
   windowBits, memLevel: Integer; strategy: TZStrategy): RawByteString;
@@ -566,15 +566,15 @@ procedure ZCompressString2(var result: RawByteString; const s: UnicodeString;
   strategy: TZStrategy); overload;
 {$endif}
 
-{*****************************************************************************
-*  ZCompressStrWeb                                                           *
-*                                                                            *
-*  pre-conditions                                                            *
-*    s = uncompressed data string                                            *
-*                                                                            *
-*  return                                                                    *
-*    compressed data string                                                  *
-*****************************************************************************}
+{*************************************************************************************************
+*  ZCompressStrWeb                                                                               *
+*                                                                                                *
+*  pre-conditions                                                                                *
+*    s = uncompressed data string                                                                *
+*                                                                                                *
+*  return                                                                                        *
+*    compressed data string                                                                      *
+*************************************************************************************************}
 
 function  ZCompressStrWeb(const s: AnsiString): RawByteString;
 
@@ -586,15 +586,15 @@ procedure  ZCompressStringWeb(var result: RawByteString;
   const s: UnicodeString); overload;
 {$endif}
 
-{*****************************************************************************
-*  ZDecompressStr                                                            *
-*                                                                            *
-*  pre-conditions                                                            *
-*    s = compressed data string                                              *
-*                                                                            *
-*  return                                                                    *
-*    uncompressed data string                                                *
-*****************************************************************************}
+{*************************************************************************************************
+*  ZDecompressStr                                                                                *
+*                                                                                                *
+*  pre-conditions                                                                                *
+*    s = compressed data string                                                                  *
+*                                                                                                *
+*  return                                                                                        *
+*    uncompressed data string                                                                    *
+*************************************************************************************************}
 
 function  ZDecompressStr(const s: RawByteString): AnsiString;
 
@@ -606,16 +606,16 @@ procedure ZDecompressString(var result: UnicodeString;
   const s: RawByteString); overload;
 {$endif}
 
-{*****************************************************************************
-*  ZDecompressStrEx                                                          *
-*                                                                            *
-*  pre-conditions                                                            *
-*    s = compressed data string with 4 byte (integer) header indicating      *
-*        original uncompressed data length                                   *
-*                                                                            *
-*  return                                                                    *
-*    uncompressed data string                                                *
-*****************************************************************************}
+{*************************************************************************************************
+*  ZDecompressStrEx                                                                              *
+*                                                                                                *
+*  pre-conditions                                                                                *
+*    s = compressed data string with 4 byte (integer) header indicating                          *
+*        original uncompressed data length                                                       *
+*                                                                                                *
+*  return                                                                                        *
+*    uncompressed data string                                                                    *
+*************************************************************************************************}
 
 function  ZDecompressStrEx(const s: RawByteString): AnsiString;
 
@@ -627,16 +627,16 @@ procedure ZDecompressStringEx(var result: UnicodeString;
   const s: RawByteString); overload;
 {$endif}
 
-{*****************************************************************************
-*  ZDecompressStr2                                                           *
-*                                                                            *
-*  pre-conditions                                                            *
-*    s          = compressed data string                                     *
-*    windowBits = window bits                                                *
-*                                                                            *
-*  return                                                                    *
-*    uncompressed data string                                                *
-*****************************************************************************}
+{*************************************************************************************************
+*  ZDecompressStr2                                                                               *
+*                                                                                                *
+*  pre-conditions                                                                                *
+*    s          = compressed data string                                                         *
+*    windowBits = window bits                                                                    *
+*                                                                                                *
+*  return                                                                                        *
+*    uncompressed data string                                                                    *
+*************************************************************************************************}
 
 function  ZDecompressStr2(const s: RawByteString;
   windowBits: Integer): AnsiString;
@@ -649,7 +649,7 @@ procedure ZDecompressString2(var result: UnicodeString;
   const s: RawByteString; windowBits: Integer); overload;
 {$endif}
 
-{** stream routines *********************************************************}
+{** stream routines *****************************************************************************}
 
 procedure ZCompressStream(inStream, outStream: TStream;
   level: TZCompressionLevel = zcDefault);
@@ -665,7 +665,7 @@ procedure ZDecompressStream(inStream, outStream: TStream);
 procedure ZDecompressStream2(inStream, outStream: TStream;
   windowBits: Integer);
 
-{****************************************************************************}
+{************************************************************************************************}
 
 type
   EZLibErrorClass = class of EZlibError;
@@ -688,7 +688,7 @@ implementation
 const
   SZInvalid = 'Invalid ZStream operation!';
 
-{****************************************************************************}
+{************************************************************************************************}
 
 function ZCompressCheck(code: Integer): Integer;
 begin
@@ -713,7 +713,7 @@ begin
   end;
 end;
 
-{** zlib deflate routines ***************************************************}
+{** zlib deflate routines ***********************************************************************}
 
 function ZDeflateInit(var stream: TZStreamRec;
   level: TZCompressionLevel): Integer;
@@ -745,7 +745,7 @@ begin
   result := deflateReset(stream);
 end;
 
-{** zlib inflate routines ***************************************************}
+{** zlib inflate routines ***********************************************************************}
 
 function ZInflateInit(var stream: TZStreamRec): Integer;
 begin
@@ -774,7 +774,7 @@ begin
   result := inflateReset(stream);
 end;
 
-{** zlib checksum routines **************************************************}
+{** zlib checksum routines **********************************************************************}
 
 function ZAdler32(adler: Longint; const buffer; size: Integer): Longint;
 begin
@@ -786,7 +786,7 @@ begin
   result := crc32(crc,buffer,size);
 end;
 
-{** zlib extended routines **************************************************}
+{** zlib extended routines **********************************************************************}
 
 procedure ZDeflateEx(var stream: TZStreamRec; param: Pointer;
   read: TZReadFunction; write: TZWriteFunction; flush: TZFlush);
@@ -875,7 +875,7 @@ begin
   end;
 end;
 
-{** private buffer routines *************************************************}
+{** private buffer routines *********************************************************************}
 
 type
   PZBufferParam = ^TZBufferParam;
@@ -1083,7 +1083,7 @@ begin
   end;
 end;
 
-{** buffer routines *********************************************************}
+{** buffer routines *****************************************************************************}
 
 procedure ZCompress(const inBuffer: Pointer; inSize: Integer;
   out outBuffer: Pointer; out outSize: Integer;
@@ -1139,7 +1139,7 @@ begin
     outEstimate);
 end;
 
-{** string routines *********************************************************}
+{** string routines *****************************************************************************}
 
 function ZCompressStr(const s: AnsiString;
   level: TZCompressionLevel): RawByteString;
@@ -1157,7 +1157,10 @@ begin
 
   SetLength(result, size);
 
-  Move(buffer^, result[1], size);
+  if size > 0 then
+  begin
+    Move(buffer^, result[1], size);
+  end;
 
   FreeMem(buffer);
 end;
@@ -1173,7 +1176,10 @@ begin
 
   SetLength(result, size);
 
-  Move(buffer^, result[1], size);
+  if size > 0 then
+  begin
+    Move(buffer^, result[1], size);
+  end;
 
   FreeMem(buffer);
 end;
@@ -1195,7 +1201,10 @@ begin
 
   SetLength(result, size + SizeOf(Integer));
 
-  Move(buffer^, result[5], size);
+  if size > 0 then
+  begin
+    Move(buffer^, result[1 + SizeOf(Integer)], size);
+  end;
 
   size := Length(s);
 
@@ -1215,7 +1224,10 @@ begin
 
   SetLength(result, size + SizeOf(Integer));
 
-  Move(buffer^, result[5], size);
+  if size > 0 then
+  begin
+    Move(buffer^, result[1 + SizeOf(Integer)], size);
+  end;
 
   size := Length(s) * SizeOf(UnicodeChar);
 
@@ -1243,7 +1255,10 @@ begin
 
   SetLength(result, size);
 
-  Move(buffer^, result[1], size);
+  if size > 0 then
+  begin
+    Move(buffer^, result[1], size);
+  end;
 
   FreeMem(buffer);
 end;
@@ -1261,7 +1276,10 @@ begin
 
   SetLength(result, size);
 
-  Move(buffer^, result[1], size);
+  if size > 0 then
+  begin
+    Move(buffer^, result[1], size);
+  end;
 
   FreeMem(buffer);
 end;
@@ -1300,7 +1318,10 @@ begin
 
   SetLength(result, size);
 
-  Move(buffer^, result[1], size);
+  if size > 0 then
+  begin
+    Move(buffer^, result[1], size);
+  end;
 
   FreeMem(buffer);
 end;
@@ -1316,7 +1337,10 @@ begin
 
   SetLength(result, size div SizeOf(UnicodeChar));
 
-  Move(buffer^, result[1], size);
+  if size > 0 then
+  begin
+    Move(buffer^, result[1], size);
+  end;
 
   FreeMem(buffer);
 end;
@@ -1340,15 +1364,25 @@ begin
 
   SetLength(data, dataSize);
 
-  Move(s[5], data[1], dataSize);
+  if dataSize > 0 then
+  begin
+    Move(s[1 + SizeOf(Integer)], data[1], dataSize);
 
-  ZDecompress(Pointer(data), dataSize, buffer, size, size);
+    ZDecompress(Pointer(data), dataSize, buffer, size, size);
 
-  SetLength(result, size);
+    SetLength(result, size);
 
-  Move(buffer^, result[1], size);
+    if size > 0 then
+    begin
+      Move(buffer^, result[1], size);
+    end;
 
-  FreeMem(buffer);
+    FreeMem(buffer);
+  end
+  else
+  begin
+    SetLength(result, 0);
+  end;
 end;
 
 {$ifdef Version6Plus}
@@ -1364,17 +1398,27 @@ begin
 
   dataSize := Length(s) - SizeOf(Integer);
 
-  SetLength(data, dataSize);
+  if dataSize > 0 then
+  begin
+    SetLength(data, dataSize);
 
-  Move(s[5], data[1], dataSize);
+    Move(s[1 + SizeOf(Integer)], data[1], dataSize);
 
-  ZDecompress(Pointer(data), dataSize, buffer, size, size);
+    ZDecompress(Pointer(data), dataSize, buffer, size, size);
 
-  SetLength(result, size div SizeOf(UnicodeChar));
+    SetLength(result, size div SizeOf(UnicodeChar));
 
-  Move(buffer^, result[1], size);
+    if size > 0 then
+    begin
+      Move(buffer^, result[1], size);
+    end;
 
-  FreeMem(buffer);
+    FreeMem(buffer);
+  end
+  else
+  begin
+    SetLength(result, 0);
+  end;
 end;
 {$endif}
 
@@ -1394,7 +1438,10 @@ begin
 
   SetLength(result, size);
 
-  Move(buffer^, result[1], size);
+  if size > 0 then
+  begin
+    Move(buffer^, result[1], size);
+  end;
 
   FreeMem(buffer);
 end;
@@ -1410,13 +1457,16 @@ begin
 
   SetLength(result, size div SizeOf(UnicodeChar));
 
-  Move(buffer^, result[1], size);
+  if size > 0 then
+  begin
+    Move(buffer^, result[1], size);
+  end;
 
   FreeMem(buffer);
 end;
 {$endif}
 
-{** private stream routines *************************************************}
+{** private stream routines *********************************************************************}
 
 type
   PZStreamParam = ^TZStreamParam;
@@ -1565,7 +1615,7 @@ begin
   end;
 end;
 
-{** stream routines *********************************************************}
+{** stream routines *****************************************************************************}
 
 procedure ZCompressStream(inStream, outStream: TStream;
   level: TZCompressionLevel);
@@ -1621,7 +1671,7 @@ begin
   ZInternalDecompressStream(zstream, inStream, outStream);
 end;
 
-{** TCustomZStream **********************************************************}
+{** TCustomZStream ******************************************************************************}
 
 constructor TCustomZStream.Create(stream: TStream);
 begin
@@ -1692,7 +1742,7 @@ begin
   FStreamPos := FStream.Position;
 end;
 
-{** TZCompressionStream *****************************************************}
+{** TZCompressionStream *************************************************************************}
 
 constructor TZCompressionStream.Create(dest: TStream;
   compressionLevel: TZCompressionLevel);
@@ -1799,7 +1849,7 @@ begin
   else result := (1.0 - (FZStream.total_out / FZStream.total_in)) * 100.0;
 end;
 
-{** TZDecompressionStream ***************************************************}
+{** TZDecompressionStream ***********************************************************************}
 
 constructor TZDecompressionStream.Create(source: TStream);
 begin
@@ -1908,7 +1958,7 @@ begin
   result := FZStream.total_out;
 end;
 
-{** TZCustomBuffer **********************************************************}
+{** TZCustomBuffer ******************************************************************************}
 
 constructor TZCustomBuffer.Create;
 begin
@@ -2004,7 +2054,7 @@ begin
   end;
 end;
 
-{** TZCompressionBuffer *****************************************************}
+{** TZCompressionBuffer *************************************************************************}
 
 constructor TZCompressionBuffer.Create(level: TZCompressionLevel);
 begin
@@ -2090,7 +2140,7 @@ begin
   result := size - FZStream.avail_in;
 end;
 
-{** TZDecompressionBuffer ***************************************************}
+{** TZDecompressionBuffer ***********************************************************************}
 
 constructor TZDecompressionBuffer.Create;
 begin
@@ -2151,7 +2201,7 @@ begin
   result := size - FZStream.avail_in;
 end;
 
-{** EZLibError **************************************************************}
+{** EZLibError **********************************************************************************}
 
 constructor EZLibError.Create(code: Integer; const dummy: String);
 begin

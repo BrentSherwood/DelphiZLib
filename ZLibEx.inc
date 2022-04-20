@@ -1,24 +1,26 @@
-{*****************************************************************************
-*  ZLibEx.inc                                                                *
-*  copyright (c) 2006-2010 base2 technologies                                *
-*                                                                            *
-*  version information for delphi/c++ builder                                *
-*                                                                            *
-*  revision history                                                          *
-*    2010.01.27  updated for delphi 2010                                     *
-*    2009.04.11  updated to use CONDITIONALEXPRESSIONS and CompilerVersion   *
-*    2009.01.28  updated for delphi 2009                                     *
-*    2007.10.01  updated for delphi 2007                                     *
-*    2005.11.29  created                                                     *
-*                                                                            *
-*  acknowledgments                                                           *
-*    iztok kacin                                                             *
-*      2009.04.11  CONDITIONALEXPRESSIONS and CompilerVersion changes        *
-*****************************************************************************}
+{*************************************************************************************************
+*  ZLibEx.inc                                                                                    *
+*  copyright (c) 2006-2012 base2 technologies                                                    *
+*                                                                                                *
+*  version information for delphi/c++ builder                                                    *
+*                                                                                                *
+*  revision history                                                                              *
+*    2012.05.01  updated for delphi xe2 (2012)                                                   *
+*    2010.09.18  updated for delphi xe (2011)                                                    *
+*    2010.01.27  updated for delphi 2010                                                         *
+*    2009.04.11  updated to use CONDITIONALEXPRESSIONS and CompilerVersion                       *
+*    2009.01.28  updated for delphi 2009                                                         *
+*    2007.10.01  updated for delphi 2007                                                         *
+*    2005.11.29  created                                                                         *
+*                                                                                                *
+*  acknowledgments                                                                               *
+*    iztok kacin                                                                                 *
+*      2009.04.11  CONDITIONALEXPRESSIONS and CompilerVersion changes                            *
+*************************************************************************************************}
 
 {$ifndef CONDITIONALEXPRESSIONS}
 
-  {** delphi ****************************************************************}
+  {** delphi ************************************************************************************}
 
   {$ifdef VER80}                        // delphi 1
     {$define Delphi}
@@ -44,7 +46,7 @@
     {$define Version4}
   {$endif}
 
-  {** c++ builder ***********************************************************}
+  {** c++ builder *******************************************************************************}
 
   {$ifdef VER93}                        // c++ builder 1
     {$define CBuilder}
@@ -64,7 +66,7 @@
     {$define Version4}
   {$endif}
 
-  {** delphi/c++ builder (common) *******************************************}
+  {** delphi/c++ builder (common) ***************************************************************}
 
   {$ifdef VER130}                       // delphi/c++ builder 5
     {$ifdef BCB}
@@ -150,6 +152,22 @@
     {$endif}
 
     {$define Version2010Plus}
+  {$ifend}
+
+  {$if CompilerVersion >= 22.0}         // bds xe (2011)
+    {$ifdef VER220}
+      {$define Version2011}
+    {$endif}
+
+    {$define Version2011Plus}
+  {$ifend}
+
+  {$if CompilerVersion >= 23.0}         // bds xe2 (2012)
+    {$ifdef VER230}
+      {$define Version2012}
+    {$endif}
+
+    {$define Version2012Plus}
   {$ifend}
 
 {$endif}
