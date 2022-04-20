@@ -5,6 +5,9 @@
 *  copyright (c) 1995-2002 Borland Software Corporation                                          *
 *                                                                                                *
 *  revision history                                                                              *
+*    2012.05.21  updated for win64 (delphi xe2)                                                  *
+*                moved win32 obj files to win32 subfolder                                        *
+*                changed win32 obj options to exclude the underscore                             *
 *    2012.05.07  updated to zlib version 1.2.7                                                   *
 *    2012.03.05  udpated to zlib version 1.2.6                                                   *
 *    2010.04.20  updated to zlib version 1.2.5                                                   *
@@ -27,6 +30,9 @@
 *                                                                                                *
 *    tommi prami                                                                                 *
 *      2012.03.05  informing me about the zlib 1.2.6 update                                      *
+*                                                                                                *
+*    marian pascalau                                                                             *
+*      2012.05.21  providing the win64 obj files and your win64 modifications                    *
 *************************************************************************************************}
 
 unit ZLibExApi;
@@ -38,12 +44,13 @@ interface
 const
   {** version ids *******************************************************************************}
 
-  ZLIB_VERSION         = '1.2.7';
-  ZLIB_VERNUM          = $1270;
+  ZLIB_VERSION: PAnsiChar = '1.2.7';
 
-  ZLIB_VER_MAJOR       = 1;
-  ZLIB_VER_MINOR       = 2;
-  ZLIB_VER_REVISION    = 7;
+  ZLIB_VERNUM = $1270;
+
+  ZLIB_VER_MAJOR = 1;
+  ZLIB_VER_MINOR = 2;
+  ZLIB_VER_REVISION = 7;
   ZLIB_VER_SUBREVISION = 0;
 
   {** compression methods ***********************************************************************}
@@ -105,7 +112,7 @@ const
 
   {** return code messages **********************************************************************}
 
-  _z_errmsg: Array [0..9] of String = (
+  z_errmsg: Array [0..9] of String = (
     'Need dictionary',      // Z_NEED_DICT      (2)
     'Stream end',           // Z_STREAM_END     (1)
     'OK',                   // Z_OK             (0)
@@ -119,21 +126,21 @@ const
   );
 
 type
-  TZAlloc = function (opaque: Pointer; items, size: Integer): Pointer;
-  TZFree  = procedure (opaque, block: Pointer);
+  TZAlloc = function (opaque: Pointer; items, size: Integer): Pointer; cdecl;
+  TZFree  = procedure (opaque, block: Pointer); cdecl;
 
   {** TZStreamRec *******************************************************************************}
 
   TZStreamRec = packed record
-    next_in  : Pointer;   // next input byte
-    avail_in : Longint;   // number of bytes available at next_in
-    total_in : Longint;   // total nb of input bytes read so far
+    next_in  : PByte;     // next input byte
+    avail_in : Cardinal;  // number of bytes available at next_in
+    total_in : Longword;  // total nb of input bytes read so far
 
-    next_out : Pointer;   // next output byte should be put here
-    avail_out: Longint;   // remaining free space at next_out
-    total_out: Longint;   // total nb of bytes output so far
+    next_out : PByte;     // next output byte should be put here
+    avail_out: Cardinal;  // remaining free space at next_out
+    total_out: Longword;  // total nb of bytes output so far
 
-    msg      : Pointer;   // last error message, NULL if no error
+    msg      : PAnsiChar; // last error message, NULL if no error
     state    : Pointer;   // not visible by applications
 
     zalloc   : TZAlloc;   // used to allocate the internal state
@@ -141,8 +148,8 @@ type
     opaque   : Pointer;   // private data object passed to zalloc and zfree
 
     data_type: Integer;   // best guess about the data type: ascii or binary
-    adler    : Longint;   // adler32 value of the uncompressed data
-    reserved : Longint;   // reserved for future use
+    adler    : Longword;  // adler32 value of the uncompressed data
+    reserved : Longword;  // reserved for future use
   end;
 
 {** macros **************************************************************************************}
@@ -196,21 +203,33 @@ implementation
 *  link zlib code                                                                                *
 *                                                                                                *
 *  bcc32 flags                                                                                   *
-*    -c -O2 -Ve -X -pr -a8 -b -d -k- -vi -tWM                                                    *
+*    -c -O2 -Ve -X -pr -a8 -b -d -k- -vi -tWM -u-                                                *
 *                                                                                                *
 *  note: do not reorder the following -- doing so will result in external                        *
 *  functions being undefined                                                                     *
 *************************************************************************************************}
 
-{$L deflate.obj}
-{$L inflate.obj}
-{$L inftrees.obj}
-{$L infback.obj}
-{$L inffast.obj}
-{$L trees.obj}
-{$L compress.obj}
-{$L adler32.obj}
-{$L crc32.obj}
+{$ifdef WIN64}
+{$L win64\deflate.obj}
+{$L win64\inflate.obj}
+{$L win64\inftrees.obj}
+{$L win64\infback.obj}
+{$L win64\inffast.obj}
+{$L win64\trees.obj}
+{$L win64\compress.obj}
+{$L win64\adler32.obj}
+{$L win64\crc32.obj}
+{$else}
+{$L win32\deflate.obj}
+{$L win32\inflate.obj}
+{$L win32\inftrees.obj}
+{$L win32\infback.obj}
+{$L win32\inffast.obj}
+{$L win32\trees.obj}
+{$L win32\compress.obj}
+{$L win32\adler32.obj}
+{$L win32\crc32.obj}
+{$endif}
 
 {** macros **************************************************************************************}
 
@@ -293,21 +312,23 @@ end;
 
 {** c function implementations ******************************************************************}
 
-function _memset(p: Pointer; b: Byte; count: Integer): Pointer; cdecl;
+function memset(p: Pointer; b: Byte; count: Integer): Pointer; cdecl;
 begin
   FillChar(p^, count, b);
 
   result := p;
 end;
 
-procedure _memcpy(dest, source: Pointer; count: Integer); cdecl;
+procedure memcpy(dest, source: Pointer; count: Integer); cdecl;
 begin
   Move(source^, dest^, count);
 end;
 
-procedure __llmod;
+{$ifndef WIN64}
+procedure _llmod;
 asm
   jmp System.@_llmod;
 end;
+{$endif}
 
 end.

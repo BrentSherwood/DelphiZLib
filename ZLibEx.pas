@@ -1,10 +1,13 @@
 {*************************************************************************************************
 *  ZLibEx.pas                                                                                    *
 *                                                                                                *
-*  copyright (c) 2000-2011 base2 technologies                                                    *
+*  copyright (c) 2000-2012 base2 technologies                                                    *
 *  copyright (c) 1995-2002 Borland Software Corporation                                          *
 *                                                                                                *
 *  revision history                                                                              *
+*    2012.05.21  updated for win64 (delphi xe2)                                                  *
+*                added NativeInt type for delphi 2007-                                           *
+*                added NativeUInt type for delphi 2007-                                          *
 *    2011.07.21  fixed routines to validate size before calling Move                             *
 *    2010.07.01  hide overloaded Z*String* routines for delphi 5                                 *
 *    2010.05.02  added ZDelfateEx and ZInflateEx                                                 *
@@ -91,6 +94,9 @@
 *                                                                                                *
 *    egron elbra                                                                                 *
 *      2011.07.20  pointing out the range exception when moving empty strings                    *
+*                                                                                                *
+*    marian pascalau                                                                             *
+*      2012.05.21  providing their win64 modifications                                           *
 *************************************************************************************************}
 
 unit ZLibEx;
@@ -114,6 +120,13 @@ type
 {$else ifdef Version2010Plus}
 
   UnicodeChar = WideChar;
+
+{$endif}
+
+{$ifndef Version2009Plus}
+
+  NativeInt = Integer;
+  NativeUInt = Cardinal;
 
 {$endif}
 
@@ -1003,8 +1016,8 @@ begin
       repeat
         ReallocMem(outBuffer, outSize);
 
-        zstream.next_out := Pointer(Integer(outBuffer) + zstream.total_out);
-        zstream.avail_out := outSize - zstream.total_out;
+        zstream.next_out := PByte(NativeUInt(outBuffer) + zstream.total_out);
+        zstream.avail_out := NativeUInt(outSize) - zstream.total_out;
 
         zresult := ZCompressCheck(ZDeflate(zstream, zfNoFlush));
 
@@ -1015,8 +1028,8 @@ begin
       begin
         ReallocMem(outBuffer, outSize);
 
-        zstream.next_out := Pointer(Integer(outBuffer) + zstream.total_out);
-        zstream.avail_out := outSize - zstream.total_out;
+        zstream.next_out := PByte(NativeUInt(outBuffer) + zstream.total_out);
+        zstream.avail_out := NativeUInt(outSize) - zstream.total_out;
 
         zresult := ZCompressCheck(ZDeflate(zstream, zfFinish));
 
@@ -1061,8 +1074,8 @@ begin
         repeat
           ReallocMem(outBuffer, outSize);
 
-          zstream.next_out := Pointer(Integer(outBuffer) + zstream.total_out);
-          zstream.avail_out := outSize - zstream.total_out;
+          zstream.next_out := PByte(NativeUInt(outBuffer) + zstream.total_out);
+          zstream.avail_out := NativeUInt(outSize) - zstream.total_out;
 
           zresult := ZDecompressCheck(ZInflate(zstream, zfNoFlush), False);
 
@@ -1529,8 +1542,8 @@ const
   bufferSize = 32768;
 var
   zresult  : Integer;
-  inBuffer : Array [0..bufferSize-1] of Byte;
-  outBuffer: Array [0..bufferSize-1] of Byte;
+  inBuffer : Array [0..bufferSize - 1] of Byte;
+  outBuffer: Array [0..bufferSize - 1] of Byte;
   outSize  : Integer;
 begin
   zresult := Z_STREAM_END;
@@ -1826,7 +1839,7 @@ begin
       begin
         StreamPosition := StreamPosition - writeCount;
 
-        result := count - FZStream.avail_in;
+        result := Cardinal(count) - FZStream.avail_in;
 
         FZStream.avail_in := 0;
       end;
@@ -1896,7 +1909,7 @@ begin
 
       if FZStream.avail_in = 0 then
       begin
-        result := count - FZStream.avail_out;
+        result := Cardinal(count) - FZStream.avail_out;
 
         Exit;
       end;
@@ -1916,7 +1929,7 @@ begin
     FZStream.avail_in := 0;
   end;
 
-  result := count - FZStream.avail_out;
+  result := Cardinal(count) - FZStream.avail_out;
 end;
 
 function TZDecompressionStream.Write(const Buffer; Count: Longint): Longint;
@@ -1939,7 +1952,7 @@ begin
     StreamPosition := 0;
   end
   else if ((offset >= 0) and (origin = soFromCurrent)) or
-          (((offset - FZStream.total_out) > 0) and (origin = soFromBeginning)) then
+          (((Cardinal(offset) - FZStream.total_out) > 0) and (origin = soFromBeginning)) then
   begin
     if origin = soFromBeginning then Dec(offset, FZStream.total_out);
 
@@ -2137,7 +2150,7 @@ begin
     until (zresult = Z_STREAM_END) or (FZStream.avail_out > 0);
   end;
 
-  result := size - FZStream.avail_in;
+  result := Cardinal(size) - FZStream.avail_in;
 end;
 
 {** TZDecompressionBuffer ***********************************************************************}
@@ -2198,14 +2211,14 @@ begin
     until (zresult = Z_STREAM_END) or (FZStream.avail_out > 0);
   end;
 
-  result := size - FZStream.avail_in;
+  result := Cardinal(size) - FZStream.avail_in;
 end;
 
 {** EZLibError **********************************************************************************}
 
 constructor EZLibError.Create(code: Integer; const dummy: String);
 begin
-  inherited Create(_z_errmsg[2 - code]);
+  inherited Create(z_errmsg[2 - code]);
 
   FErrorCode := code;
 end;

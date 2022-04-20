@@ -1,7 +1,10 @@
 ﻿-- notes ---------------------------------------------------------------------
 
   the units included in this archive should work with delphi 5 through delphi
-  xe.
+  xe2 for win32.
+
+  the units included in this archive with the exception of zlibexgz should
+  work with delphi xe2 for win64.
 
   please contact me if you find any errors, make any changes, add new
   functionality, or have any general suggestions so that i may incorporate
@@ -31,6 +34,20 @@
   finally, "use" the zlibex and zlibexgz units as needed.
 
 -- history -------------------------------------------------------------------
+
+  2012.05.23  zlibexgz.pas
+                updated for delphi xe2
+                added overloaded GZCompressFile
+
+  2012.05.21  zlibex.pas
+                updated for win64 (delphi xe2)
+                added NativeInt type for delphi 2007-
+                added NativeUInt type for delphi 2007-
+
+              zlibexapi.pas
+                updated for win64 (delphi xe2)
+                moved win32 obj files to win32 subfolder
+                changed win32 obj options to exclude the underscore
 
   2012.05.07  zlibexapi.pas
                 updated to zlib version 1.2.7
@@ -272,6 +289,9 @@
 
   tommi prami - thanks for emailing to inform me about the zlib 1.2.6 udpate
 
+  marian pascalau - thanks for providing the win64 obj files and your win64
+    modifications
+
 -- contents ------------------------------------------------------------------
 
   delphi files
@@ -283,42 +303,46 @@
 
   objects files used by zlibex.pas
 
-    adler32.obj
-    compress.obj
-    crc32.obj
-    deflate.obj
-    infback.obj
-    inffast.obj
-    inflate.obj
-    inftrees.obj
-    trees.obj
+    win32\adler32.obj
+    win32\compress.obj
+    win32\crc32.obj
+    win32\deflate.obj
+    win32\infback.obj
+    win32\inffast.obj
+    win32\inflate.obj
+    win32\inftrees.obj
+    win32\trees.obj
 
-  c++ builder 2007 files
+    win64\adler32.obj
+    win64\compress.obj
+    win64\crc32.obj
+    win64\deflate.obj
+    win64\infback.obj
+    win64\inffast.obj
+    win64\inflate.obj
+    win64\inftrees.obj
+    win64\trees.obj
 
-    delphizlib.bpr
-    delphizlib.cbproj
-    delphizlib.cpp
+  zlib 1.2.7 source files (http://www.zlib.net)
 
-  zlib 1.2.6 source files (http://www.zlib.net)
-
-    adler32.c
-    compress.c
-    crc32.c
-    deflate.c
-    infback.c
-    inffast.c
-    inflate.c
-    inftrees.c
-    trees.c
-    zutil.c
-    crc32.h
-    deflate.h
-    inffast.h
-    inffixed.h
-    inflate.h
-    inftrees.h
-    trees.h
-    zconf.h
-    zlib.h
-    zutil.h
+    zlib\adler32.c
+    zlib\compress.c
+    zlib\crc32.c
+    zlib\deflate.c
+    zlib\infback.c
+    zlib\inffast.c
+    zlib\inflate.c
+    zlib\inftrees.c
+    zlib\trees.c
+    zlib\zutil.c
+    zlib\crc32.h
+    zlib\deflate.h
+    zlib\inffast.h
+    zlib\inffixed.h
+    zlib\inflate.h
+    zlib\inftrees.h
+    zlib\trees.h
+    zlib\zconf.h
+    zlib\zlib.h
+    zlib\zutil.h
 

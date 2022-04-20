@@ -1,10 +1,12 @@
 {*************************************************************************************************
 *  ZLibExGZ.pas                                                                                  *
 *                                                                                                *
-*  copyright (c) 2000-2011 base2 technologies                                                    *
+*  copyright (c) 2000-2012 base2 technologies                                                    *
 *  copyright (c) 1995-2002 Borland Software Corporation                                          *
 *                                                                                                *
 *  revision history                                                                              *
+*    2012.05.23  updated for delphi xe2                                                          *
+*                added overloaded GZCompressFile                                                 *
 *    2011.07.21  fixed routines to validate size before calling Move                             *
 *    2010.01.27  updated for delphi 2010                                                         *
 *    2009.04.14  added overloaded string routines for AnsiString and                             *
@@ -59,7 +61,7 @@ interface
 {$I ZLibEx.inc}
 
 uses
-  ZLibEx, SysUtils, Classes {$IFDEF Version6Plus}, DateUtils {$ENDIF};
+  ZLibEx, Windows, SysUtils, Classes {$IFDEF Version6Plus}, DateUtils {$ENDIF};
 
 type
   {** TGZHeader *********************************************************************************}
@@ -220,15 +222,18 @@ function  GZDecompressStreamSize(inStream: TStream): Longint; overload;
 
 {** file routines *******************************************************************************}
 
-procedure GZCompressFile(const inFileName, outFileName,
-  comment: AnsiString); overload;
+procedure GZCompressFile(const inFileName, outFileName: String;
+  const fileName, comment: AnsiString); overload;
 
-procedure GZCompressFile(const inFileName, outFileName: AnsiString); overload;
+procedure GZCompressFile(const inFileName, outFileName: String;
+  const comment: AnsiString); overload;
 
-procedure GZDecompressFile(const inFileName, outFolder: AnsiString;
+procedure GZCompressFile(const inFileName, outFileName: String); overload;
+
+procedure GZDecompressFile(const inFileName, outFolder: String;
   var comment: AnsiString); overload;
 
-procedure GZDecompressFile(const inFileName, outFolder: AnsiString); overload;
+procedure GZDecompressFile(const inFileName, outFolder: String); overload;
 
 implementation
 
@@ -970,27 +975,25 @@ end;
 
 {** file routines *******************************************************************************}
 
-procedure GZCompressFile(const inFileName, outFileName, comment: AnsiString);
+procedure GZCompressFile(const inFileName, outFileName: String;
+  const fileName, comment: AnsiString);
 var
   inStream : TFileStream;
   outStream: TFileStream;
-  fileName : AnsiString;
   dateTime : TDateTime;
 begin
-  inStream := TFileStream.Create(inFileName, fmOpenRead or fmShareDenyNone);
+  inStream := TFileStream.Create(String(inFileName), fmOpenRead or fmShareDenyNone);
 
   try
-    dateTime := FileDateToDateTime(FileAge(inFileName));
+    if not FileAge(inFileName, dateTime) then
+    begin
+      dateTime := 0;
+    end;
 
-    if outFileName = '' then fileName := inFileName + '.gz'
-    else fileName := outFileName;
-
-    outStream := TFileStream.Create(outFileName,fmCreate);
+    outStream := TFileStream.Create(outFileName, fmCreate);
 
     try
-      fileName := ExtractFileName(inFileName);
-
-      GZCompressStream(inStream,outStream,fileName,comment,dateTime);
+      GZCompressStream(inStream, outStream, fileName, comment, dateTime);
     finally
       outStream.Free;
     end;
@@ -999,56 +1002,71 @@ begin
   end;
 end;
 
-procedure GZCompressFile(const inFileName, outFileName: AnsiString);
+procedure GZCompressFile(const inFileName, outFileName: String;
+  const comment: AnsiString);
+var
+  fileName: AnsiString;
+begin
+  fileName := ExtractFilename(inFileName);
+
+  GZCompressFile(inFileName, outFileName, fileName, '');
+end;
+
+procedure GZCompressFile(const inFileName, outFileName: String);
 begin
   GZCompressFile(inFileName, outFileName, '');
 end;
 
-procedure GZDecompressFile(const inFileName, outFolder: AnsiString;
+procedure GZDecompressFile(const inFileName, outFolder: String;
   var comment: AnsiString);
 var
-  inStream   : TFileStream;
-  outStream  : TFileStream;
-  outFileName: AnsiString;
-  fileName   : AnsiString;
-  dateTime   : TDateTime;
+  inStream    : TFileStream;
+  outStream   : TFileStream;
+  outFileName : String;
+  tempFileName: String;
+  fileName    : AnsiString;
+  dateTime    : TDateTime;
 begin
-  inStream := TFileStream.Create(inFileName,fmOpenRead or fmShareDenyNone);
+  inStream := TFileStream.Create(inFileName, fmOpenRead or fmShareDenyNone);
 
   try
-    if CompareText(ExtractFileExt(inFileName),'.gz') = 0 then
+    if CompareText(ExtractFileExt(inFileName), '.gz') = 0 then
     begin
-      fileName := IncludeTrailingPathDelimiter(outFolder);
-      fileName := fileName + ChangeFileExt(ExtractFileName(inFileName),'');
+      tempFileName := IncludeTrailingPathDelimiter(outFolder);
+      tempFileName := tempFileName + ChangeFileExt(ExtractFileName(inFileName), '');
     end
-    else fileName := '_ZLIBEXGZ';
+    else tempFileName := '_ZLIBEXGZ';
 
-    outStream := TFileStream.Create(fileName,fmCreate);
+    outStream := TFileStream.Create(tempFileName, fmCreate);
 
     try
-      GZDecompressStream(inStream,outStream,outFileName,comment,dateTime);
+      GZDecompressStream(inStream, outStream, fileName, comment, dateTime);
     finally
       outStream.Free;
     end;
 
-    if outFileName <> '' then
+    if fileName <> '' then
     begin
-      outFileName := ExtractFilePath(fileName) + ExtractFileName(outFileName);
+      outFileName := ExtractFilePath(tempFileName) + ExtractFileName(String(fileName));
 
-      RenameFile(fileName,outFileName);
+      RenameFile(outFileName, outFileName);
+    end
+    else outFileName := tempFileName;
 
-      FileSetDate(outFileName,DateTimeToFileDate(dateTime));
+    if dateTime <> 0 then
+    begin
+      FileSetDate(outFileName, DateTimeToFileDate(dateTime));
     end;
   finally
     inStream.Free;
   end;
 end;
 
-procedure GZDecompressFile(const inFileName, outFolder: AnsiString);
+procedure GZDecompressFile(const inFileName, outFolder: String);
 var
   comment: AnsiString;
 begin
-  GZDecompressFile(inFileName,outFolder,comment);
+  GZDecompressFile(inFileName, outFolder, comment);
 end;
 
 {** TGZCompressionStream ************************************************************************}
