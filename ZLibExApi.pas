@@ -5,6 +5,7 @@
 *  copyright (c) 1995-2002 Borland Software Corporation                      *
 *                                                                            *
 *  revision history                                                          *
+*    2010.04.20  updated to zlib version 1.2.5                               *
 *    2010.04.15  updated to zlib version 1.2.4                               *
 *    2005.07.25  updated to zlib version 1.2.3                               *
 *    2005.01.11  updated to zlib version 1.2.2                               *
@@ -16,7 +17,7 @@
 *      2002.03.15  informing me about the zlib 1.1.4 update                  *
 *      2004.01.06  informing me about the zlib 1.2.1 update                  *
 *                                                                            *
-*    vicente sánchez-alarcos                                                 *
+*    vicente sanchez-alarcos                                                 *
 *      2005.01.11  informing me about the zlib 1.2.2 update                  *
 *                                                                            *
 *    mathijs van veluw                                                       *
@@ -32,12 +33,12 @@ interface
 const
   {** version ids ***********************************************************}
 
-  ZLIB_VERSION         = '1.2.4';
-  ZLIB_VERNUM          = $1240;
+  ZLIB_VERSION         = '1.2.5';
+  ZLIB_VERNUM          = $1250;
 
   ZLIB_VER_MAJOR       = 1;
   ZLIB_VER_MINOR       = 2;
-  ZLIB_VER_REVISION    = 4;
+  ZLIB_VER_REVISION    = 5;
   ZLIB_VER_SUBREVISION = 0;
 
   {** compression methods ***************************************************}
@@ -190,7 +191,7 @@ implementation
 *  link zlib code                                                            *
 *                                                                            *
 *  bcc32 flags                                                               *
-*    -c -O2 -Ve -X- -pr -a8 -b -d -k- -vi -tWM                               *
+*    -c -O2 -Ve -X -pr -a8 -b -d -k- -vi -tWM                                *
 *                                                                            *
 *  note: do not reorder the following -- doing so will result in external    *
 *  functions being undefined                                                 *

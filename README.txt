@@ -9,10 +9,6 @@
 
     http://www.base2ti.com
 
-  or through my zlib newsgroup
-
-    news://www.base2ti.com/base2ti.delphi.zlib
-
   thanks.
   brent sherwood
 
@@ -35,6 +31,18 @@
   finally, "use" the zlibex and zlibexgz units as needed.
 
 -- history -------------------------------------------------------------------
+
+  2010.07.01  zlibex.pas
+                hide overloaded Z*String* routines for delphi 5
+
+  2010.05.02  zlibex.pas
+                added ZDeflateEx and ZInflateEx
+
+  2010.04.20  zlibex.pas
+                added TZ*Buffer classes
+
+              zlibexapi.pas
+                updated to zlib version 1.2.5
 
   2010.04.15  zlibex.pas
                 moved core zlib routines to separate unit (ZLibExApi.pas)
@@ -236,7 +244,11 @@
     2009.
 
   oleg matrozov - thanks for pointing out the missing loop condition
-    (avail_in > 0) in ZInternalCompress and ZInternalDecompress.
+    (avail_in > 0) in ZInternalCompress and ZInternalDecompress; and for
+    prototyping and assisting with the TZ*Buffer classes.
+
+  edward koo - thanks for pointing out the delphi 5 incompatibility with the
+   overloaded Z*String* routines.
 
 -- contents ------------------------------------------------------------------
 
