@@ -1,12 +1,12 @@
 -- notes ---------------------------------------------------------------------
 
-  the zlibex.pas unit included in this archive will work with both delphi
-  5 and delphi 6.  if you previously downloaded my delphi 5 unit, you
-  will notice that the unit has been renamed.  this was done because
-  borland included in its lib directory a zlib.dcu file; and i felt it
-  was more correct to rename my unit and force developers to have to
-  update their code than to make developers worry about the possible
-  file contention in delphi 6.
+  the zlibex.pas unit included in this archive will work with delphi 5, 6,
+  and 7.  if you previously downloaded my delphi 5 unit, you will notice
+  that the unit has been renamed.  this was done because borland included in
+  its delphi 6 and 7 lib directories a zlib.dcu file; and i felt it was more
+  correct to rename my unit and force developers to have to update their
+  code than to make developers worry about the possible file contention in
+  delphi 6 and 7.
 
   please contact me if you find any errors, make any changes, add new
   functionality, or have any general suggestions so that i may incorporate
@@ -17,14 +17,15 @@
 
 -- acknowledgements ----------------------------------------------------------
 
-  erik turner - thanks for the enhancements and recommendations.  specifically,
-    the ZCompressionStream and ZDecompressionStream routines.  i apologize
-    for the delay in getting these in here.
+  erik turner - thanks for the enhancements and recommendations.
+    specifically, the ZCompressionStream and ZDecompressionStream routines.
+    my apologies for the delay in getting these in here.
 
   david bennion - thanks for finding that nasty little endless loop quirk
     with the TZDecompressionStream.Read method.
 
-  burak kalayci - thanks for emailing to inform me about the zlib 1.1.4 update
+  burak kalayci - thanks for emailing to inform me about the zlib 1.1.4
+    update; and again for emailing about 1.2.1.
 
 -- installation --------------------------------------------------------------
 
@@ -34,28 +35,28 @@
 
 -- contents ------------------------------------------------------------------
 
-  delphi 5/6 files
+  delphi 5/6/7 files
 
     zlibex.pas
 
   objects files used by zlibex.pas
 
     adler32.obj
-    infutil.obj
+    compress.obj
+    crc32.obj
     deflate.obj
-    infblock.obj
-    infcodes.obj
+    infback.obj
     inffast.obj
     inflate.obj
     inftrees.obj
     trees.obj
 
-  c++ Builder 5 files
+  c++ Builder 6 files
 
-    d_zlib.bpr
-    d_zlib.cpp
+    DelphiZLib.bpr
+    DelphiZlib.cpp
 
-  zlib 1.1.4 source files (http://www.gzip.org/zlib)
+  zlib 1.2.1 source files (http://www.gzip.org/zlib)
 
     adler32.c
     compress.c
@@ -63,24 +64,19 @@
     deflate.c
     example.c
     gzio.c
-    infblock.c
-    infcodes.c
+    infback.c
     inffast.c
     inflate.c
     inftrees.c
-    infutil.c
-    maketree.c
     minigzip.c
     trees.c
     uncompr.c
     zutil.c
     deflate.h
-    infblock.h
-    infcodes.h
+    infback.h
     inffast.h
     inffixed.h
     inftrees.h
-    infutil.h
     trees.h
     zconf.h
     zlib.h
