@@ -1,7 +1,7 @@
 {*************************************************************************************************
 *  ZLibEx.pas                                                                                    *
 *                                                                                                *
-*  copyright (c) 2000-2012 base2 technologies                                                    *
+*  copyright (c) 2000-2013 base2 technologies                                                    *
 *  copyright (c) 1995-2002 Borland Software Corporation                                          *
 *                                                                                                *
 *  revision history                                                                              *
@@ -69,16 +69,16 @@
 *                    ZInternalDecompressStream                                                   *
 *                                                                                                *
 *    j. rathlev                                                                                  *
-*      2005.11.28  pointing out the FStreamPos and TStream.Position type inconsistency           *                                                    *
+*      2005.11.28  pointing out the FStreamPos and TStream.Position type inconsistency           *
 *                                                                                                *
 *    anders johansen                                                                             *
-*      2006.10.07  pointing out the ELibError constructor incompatibility with c++ builder       *                                                     *
+*      2006.10.07  pointing out the ELibError constructor incompatibility with c++ builder       *
 *                                                                                                *
 *    marcin szafranski                                                                           *
 *      2009.01.28  beta testing the delphi 2009 changes                                          *
 *                                                                                                *
 *    iztok kacin                                                                                 *
-*      2009.04.14  assisting me design and further improve support for delphi 2009               *                                                  *
+*      2009.04.14  assisting me design and further improve support for delphi 2009               *
 *                                                                                                *
 *    oleg matrozov                                                                               *
 *      2010.04.14  pointing out the missing loop condition (avail_in > 0) in ZInternalCompress   *
@@ -89,14 +89,17 @@
 *      2010.07.01  pointing out the delphi 5 incompatibility with the overloaded Z*String*       *
 *                    routines                                                                    *
 *                                                                                                *
-*    farshad mohajeri                                                                            *
-*      2011.05.06  paypal donation                                                               *
-*                                                                                                *
 *    egron elbra                                                                                 *
 *      2011.07.20  pointing out the range exception when moving empty strings                    *
 *                                                                                                *
 *    marian pascalau                                                                             *
 *      2012.05.21  providing their win64 modifications                                           *
+*                                                                                                *
+*  donations                                                                                     *
+*    2011.05.06  farshad mohajeri                                                                *
+*    2012.06.07  marat safin                                                                     *
+*    2012.12.14  moacir schmidt                                                                  *
+*    2013.05.23  roman ganz                                                                      *
 *************************************************************************************************}
 
 unit ZLibEx;

@@ -1,7 +1,7 @@
 {*************************************************************************************************
 *  ZLibExGZ.pas                                                                                  *
 *                                                                                                *
-*  copyright (c) 2000-2012 base2 technologies                                                    *
+*  copyright (c) 2000-2013 base2 technologies                                                    *
 *  copyright (c) 1995-2002 Borland Software Corporation                                          *
 *                                                                                                *
 *  revision history                                                                              *
@@ -284,6 +284,19 @@ begin
 end;
 
 {$ENDIF}
+
+{** FileAge *************************************************************************************}
+
+{$ifndef Version2006Plus}
+
+function FileAge(const fileName: String; var dateTime: TDateTime): Boolean;
+begin
+  dateTime := FileDateToDateTime(SysUtils.FileAge(fileName));
+
+  result := True;
+end;
+
+{$endif}
 
 {** string routines *****************************************************************************}
 
@@ -1049,7 +1062,7 @@ begin
     begin
       outFileName := ExtractFilePath(tempFileName) + ExtractFileName(String(fileName));
 
-      RenameFile(outFileName, outFileName);
+      RenameFile(tempFileName, outFileName);
     end
     else outFileName := tempFileName;
 

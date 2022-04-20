@@ -1,10 +1,11 @@
 {*************************************************************************************************
 *  ZLibExApi.pas                                                                                 *
 *                                                                                                *
-*  copyright (c) 2000-2012 base2 technologies                                                    *
+*  copyright (c) 2000-2013 base2 technologies                                                    *
 *  copyright (c) 1995-2002 Borland Software Corporation                                          *
 *                                                                                                *
 *  revision history                                                                              *
+*    2013.05.23  updated to zlib version 1.2.8                                                   *
 *    2012.05.21  updated for win64 (delphi xe2)                                                  *
 *                moved win32 obj files to win32 subfolder                                        *
 *                changed win32 obj options to exclude the underscore                             *
@@ -33,6 +34,9 @@
 *                                                                                                *
 *    marian pascalau                                                                             *
 *      2012.05.21  providing the win64 obj files and your win64 modifications                    *
+*                                                                                                *
+*    roman ganz                                                                                  *
+*      2013.05.23  informing me about the zlib 1.2.8 update                                      *
 *************************************************************************************************}
 
 unit ZLibExApi;
@@ -44,13 +48,13 @@ interface
 const
   {** version ids *******************************************************************************}
 
-  ZLIB_VERSION: PAnsiChar = '1.2.7';
+  ZLIB_VERSION: PAnsiChar = '1.2.8';
 
-  ZLIB_VERNUM = $1270;
+  ZLIB_VERNUM = $1280;
 
   ZLIB_VER_MAJOR = 1;
   ZLIB_VER_MINOR = 2;
-  ZLIB_VER_REVISION = 7;
+  ZLIB_VER_REVISION = 8;
   ZLIB_VER_SUBREVISION = 0;
 
   {** compression methods ***********************************************************************}
@@ -106,8 +110,8 @@ const
   {** data types ********************************************************************************}
 
   Z_BINARY  = 0;
-  Z_ASCII   = 1;
-  Z_TEXT    = Z_ASCII;
+  Z_TEXT    = 1;
+  Z_ASCII   = Z_TEXT;
   Z_UNKNOWN = 2;
 
   {** return code messages **********************************************************************}

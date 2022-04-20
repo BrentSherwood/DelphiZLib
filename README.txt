@@ -1,39 +1,95 @@
-﻿-- notes ---------------------------------------------------------------------
+﻿-- notes -----------------------------------------------------------------------------------------
 
-  the units included in this archive should work with delphi 5 through delphi
-  xe2 for win32.
+  the units included in this archive should work with delphi 5 through delphi xe3 for win32 and
+  win64.
 
-  the units included in this archive with the exception of zlibexgz should
-  work with delphi xe2 for win64.
-
-  please contact me if you find any errors, make any changes, add new
-  functionality, or have any general suggestions so that i may incorporate
-  them into my version.  i can be reached via my website at
+  please contact me if you find any errors, make any changes, add new functionality, or have any
+  general suggestions so that i may incorporate them into my version.  i can be reached via my
+  website at
 
     http://www.base2ti.com
 
   thanks.
+
   brent sherwood
 
--- disclaimer ----------------------------------------------------------------
+-- disclaimer ------------------------------------------------------------------------------------
 
-  this software is provided "as-is", without any express or implied warranty.
-  in no event will the authors be held liable for any damages arising from the
-  use of this software.
+  this software is provided "as-is", without any express or implied warranty. in no event will the
+  authors be held liable for any damages arising from the use of this software.
 
-  permission is granted to anyone to use this software for any purpose,
-  including commercial applications.  please do not misrepresent the origin of
-  this software.  if you use this software in a product, an acknowledgment in
-  the product documentation (readme, about box, help file, etc.) would be
-  appreciated but is not required.
+  permission is granted to anyone to use this software for any purpose, including commercial
+  applications.  please do not misrepresent the origin of this software.  if you use this software
+  in a product, an acknowledgment in the product documentation (readme, about box, help file,
+  etc.) would be appreciated but is not required.
 
--- installation --------------------------------------------------------------
+-- installation ----------------------------------------------------------------------------------
 
-  first, copy all of the files into a folder (for example, c:\delphi\zlib).
-  next, include the folder in the library path in the environment options.
-  finally, "use" the zlibex and zlibexgz units as needed.
+  first, copy all of the files into a folder (for example, c:\delphi\zlib). next, include the
+  folder in the library path in the environment options. finally, "use" the zlibex and zlibexgz
+  units as needed.
 
--- history -------------------------------------------------------------------
+-- contents --------------------------------------------------------------------------------------
+
+  delphi files
+
+    zlibex.inc
+    zlibex.pas
+    zlibexapi.pas
+    zlibexgz.pas
+
+  objects files used by zlibex.pas
+
+    win32\adler32.obj
+    win32\compress.obj
+    win32\crc32.obj
+    win32\deflate.obj
+    win32\infback.obj
+    win32\inffast.obj
+    win32\inflate.obj
+    win32\inftrees.obj
+    win32\trees.obj
+
+    win64\adler32.obj
+    win64\compress.obj
+    win64\crc32.obj
+    win64\deflate.obj
+    win64\infback.obj
+    win64\inffast.obj
+    win64\inflate.obj
+    win64\inftrees.obj
+    win64\trees.obj
+
+  zlib 1.2.8 source files (http://www.zlib.net)
+
+    zlib\adler32.c
+    zlib\compress.c
+    zlib\crc32.c
+    zlib\deflate.c
+    zlib\infback.c
+    zlib\inffast.c
+    zlib\inflate.c
+    zlib\inftrees.c
+    zlib\trees.c
+    zlib\zutil.c
+    zlib\crc32.h
+    zlib\deflate.h
+    zlib\inffast.h
+    zlib\inffixed.h
+    zlib\inflate.h
+    zlib\inftrees.h
+    zlib\trees.h
+    zlib\zconf.h
+    zlib\zlib.h
+    zlib\zutil.h
+
+-- history ---------------------------------------------------------------------------------------
+
+  2013.05.23  zlibexapi.pas
+                updated to zlib version 1.2.8
+
+              zlibex.inc
+                updated for delphi xe3 (2013)
 
   2012.05.23  zlibexgz.pas
                 updated for delphi xe2
@@ -222,127 +278,69 @@
                 optimized, fixed, rewrote, and enhanced the zlib.pas unit
                   included on the delphi cd (zlib version 1.1.3)
 
--- acknowledgments -----------------------------------------------------------
+-- acknowledgments -------------------------------------------------------------------------------
 
-  erik turner - thanks for the enhancements and recommendations.
-    specifically, the ZCompressionStream and ZDecompressionStream routines.
-    my apologies for the delay in getting these in here.
+  erik turner - thanks for the enhancements and recommendations. specifically, the
+    ZCompressionStream and ZDecompressionStream routines. my apologies for the delay in getting
+    these in here.
 
-  david bennion - thanks for finding that nasty little endless loop quirk
-    with the TZDecompressionStream.Read method.
+  david bennion - thanks for finding that nasty little endless loop quirk with the
+    TZDecompressionStream.Read method.
 
-  burak kalayci - thanks for emailing to inform me about the zlib 1.1.4
-    update; and again for emailing about 1.2.1.
+  burak kalayci - thanks for emailing to inform me about the zlib 1.1.4 update; and again for
+    emailing about 1.2.1.
 
-  vicente sánchez-alarcos - thanks for emailing to inform me about the zlib
-    1.2.2 update.
+  vicente sánchez-alarcos - thanks for emailing to inform me about the zlib 1.2.2 update.
 
-  luigi sandon - thanks for pointing out the missing loop condition
-    (Z_STREAM_END) in ZInternalCompressStream and ZInternalDecompressStream.
+  luigi sandon - thanks for pointing out the missing loop condition (Z_STREAM_END) in
+    ZInternalCompressStream and ZInternalDecompressStream.
 
-  ferry van genderen - thanks for assisting me fine tune and beta test the
-    ZInternalCompressStream and ZInternalDecompressStream routines.
+  ferry van genderen - thanks for assisting me fine tune and beta test the ZInternalCompressStream
+    and ZInternalDecompressStream routines.
 
-  mathijs van veluw - thanks for emailing to inform me about the zlib 1.2.3
-    update.
+  mathijs van veluw - thanks for emailing to inform me about the zlib 1.2.3 update.
 
-  j. rathlev - thanks for pointing out the FStreamPos and TStream.Position
-    type inconsistency.
+  j. rathlev - thanks for pointing out the FStreamPos and TStream.Position type inconsistency.
 
-  ralf wenske - thanks for prototyping and assisting with ZCompressStrG and
-    ZCompressStreamG.
+  ralf wenske - thanks for prototyping and assisting with ZCompressStrG and ZCompressStreamG.
 
-  roman krupicka - thanks for pointing out the DateUtils unit and the
-    DateTimeToUnix function wasn't available prior to delphi 6.
+  roman krupicka - thanks for pointing out the DateUtils unit and the DateTimeToUnix function
+    wasn't available prior to delphi 6.
 
-  anders johansen - thanks for pointing out the ELibError constructor
-    incompatibility with c++ builder.
+  anders johansen - thanks for pointing out the ELibError constructor incompatibility with c++
+    builder.
 
-  marcin treffler - thanks for pointing out the missing PWord declaration for
-    delphi 5.
+  marcin treffler - thanks for pointing out the missing PWord declaration for delphi 5.
 
-  jean-jacques esquirol - thanks for pointing out the "result" address issue
-    when processing filename and comment flags/content in GZCompressStr; and
-    for pointing out the type differences with TGZTrailer.Crc (Cardinal) and
-    ZCrc32 (Longint).
+  jean-jacques esquirol - thanks for pointing out the "result" address issue when processing
+    filename and comment flags/content in GZCompressStr; and for pointing out the type differences
+    with TGZTrailer.Crc (Cardinal) and ZCrc32 (Longint).
 
-  graham wideman - thanks for beta testing GZDecompressStreamSize and pointing
-    out the position handling issue in GZDecompressStream.
+  graham wideman - thanks for beta testing GZDecompressStreamSize and pointing out the position
+    handling issue in GZDecompressStream.
 
   marcin szafrański - thanks for beta testing the delphi 2009 changes.
 
-  iztok kacin - thanks for the CONDITIONALEXPRESSIONS, CompilerVersion
-    changes, and assisting me design and further improve support for delphi
-    2009.
+  iztok kacin - thanks for the CONDITIONALEXPRESSIONS, CompilerVersion changes, and assisting me
+    design and further improve support for delphi 2009.
 
-  oleg matrozov - thanks for pointing out the missing loop condition
-    (avail_in > 0) in ZInternalCompress and ZInternalDecompress; and for
-    prototyping and assisting with the TZ*Buffer classes.
+  oleg matrozov - thanks for pointing out the missing loop condition (avail_in > 0) in
+    ZInternalCompress and ZInternalDecompress; and for prototyping and assisting with the
+    TZ*Buffer classes.
 
-  edward koo - thanks for pointing out the delphi 5 incompatibility with the
-   overloaded Z*String* routines.
+  edward koo - thanks for pointing out the delphi 5 incompatibility with the overloaded Z*String*
+   routines.
 
-  farshad mohajeri - thank for the paypal donation
+  farshad mohajeri - thanks for the paypal donation.
 
-  egron elbra - thanks for pointing out the range exception when moving empty
-    strings
+  egron elbra - thanks for pointing out the range exception when moving empty strings.
 
-  tommi prami - thanks for emailing to inform me about the zlib 1.2.6 udpate
+  tommi prami - thanks for emailing to inform me about the zlib 1.2.6 udpate.
 
-  marian pascalau - thanks for providing the win64 obj files and your win64
-    modifications
+  marian pascalau - thanks for providing the win64 obj files and your win64 modifications.
 
--- contents ------------------------------------------------------------------
+  marat safin - thanks for the paypal donation.
 
-  delphi files
+  moacir schmidt - thanks for the paypal donation.
 
-    zlibex.inc
-    zlibex.pas
-    zlibexapi.pas
-    zlibexgz.pas
-
-  objects files used by zlibex.pas
-
-    win32\adler32.obj
-    win32\compress.obj
-    win32\crc32.obj
-    win32\deflate.obj
-    win32\infback.obj
-    win32\inffast.obj
-    win32\inflate.obj
-    win32\inftrees.obj
-    win32\trees.obj
-
-    win64\adler32.obj
-    win64\compress.obj
-    win64\crc32.obj
-    win64\deflate.obj
-    win64\infback.obj
-    win64\inffast.obj
-    win64\inflate.obj
-    win64\inftrees.obj
-    win64\trees.obj
-
-  zlib 1.2.7 source files (http://www.zlib.net)
-
-    zlib\adler32.c
-    zlib\compress.c
-    zlib\crc32.c
-    zlib\deflate.c
-    zlib\infback.c
-    zlib\inffast.c
-    zlib\inflate.c
-    zlib\inftrees.c
-    zlib\trees.c
-    zlib\zutil.c
-    zlib\crc32.h
-    zlib\deflate.h
-    zlib\inffast.h
-    zlib\inffixed.h
-    zlib\inflate.h
-    zlib\inftrees.h
-    zlib\trees.h
-    zlib\zconf.h
-    zlib\zlib.h
-    zlib\zutil.h
-
+  roman ganz - thanks for the paypal donation and informing me about the zlib 1.2.8 update.
